@@ -1,0 +1,61 @@
+{
+  "name": "Master Academic & Admission Care",
+  "short_name": "Master Academic",
+  "description": "Class Reminder System for Teachers",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#1a2340",
+  "theme_color": "#00c896",
+  "orientation": "portrait",
+  "permissions": [
+    "notifications",
+    "persistent-storage",
+    "background-sync",
+    "camera",
+    "microphone",
+    "geolocation",
+    "storage-access",
+    "vibrate",
+    "wake-lock",
+    "screen-wake-lock",
+    "push"
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  },
+  "shortcuts": [
+    {
+      "name": "Teacher Login",
+      "short_name": "Teacher",
+      "url": "/?role=teacher",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Student Login",
+      "short_name": "Student",
+      "url": "/?role=student",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education"],
+  "prefer_related_applications": false,
+  "handle_links": "preferred"
+}
