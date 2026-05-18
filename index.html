@@ -1113,6 +1113,13 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       </div>
     </div>
     <button class="btnp" id="lbtn" onclick="doLogin()">প্রবেশ করুন →</button>
+<!-- PWA Install Button -->
+<button id="pwa-install-btn" onclick="triggerPWAInstall()"
+  style="display:none; margin-top:12px; width:100%; padding:13px;
+  background:#00c896; color:#fff; border:none; border-radius:14px;
+  font-size:15px; font-weight:700; cursor:pointer;">
+  📲 Install App
+</button>
   </div>
 </div>
 
@@ -2354,23 +2361,6 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       <div class="t-section-label">📋 My Reports</div>
       <div id="t-hw-list"></div>
     </div>
-
-    <!-- Quiz Tab (Teacher) -->
-    <div id="t-tab-quiz" style="display:none">
-      <div class="t-section-label" style="margin-top:4px">🧠 Create AI Quiz</div>
-      <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px;padding:0 2px">Upload an image or PDF → AI extracts text and generates quiz questions automatically. Requires Gemini API key.</p>
-
-      <!-- Step 0: Gemini Key -->
-      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:12px;">
-        <div style="font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:10px;">🔑 Gemini API Key</div>
-        <p style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:9px">Get your free key from <strong style="color:rgba(255,255,255,.6)">ai.google.dev</strong></p>
-        <div style="display:flex;gap:8px">
-          <input type="password" id="quiz-gemini-key" placeholder="Enter Gemini API key..."
-            style="flex:1;padding:10px 13px;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-family:'Hind Siliguri',sans-serif;font-size:13px;outline:none;"/>
-          <button onclick="window.quizSaveGeminiKey()"
-            style="padding:10px 16px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--g),var(--b));color:#fff;font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">💾 Save</button>
-        </div>
-      </div>
 
       <!-- Step 1: Upload -->
       <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:12px;">
