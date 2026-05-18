@@ -110,22 +110,7 @@ window._qrcodeReady=true;</script>
   });
 })();
 </script>
-<script>
-  let _pwaPrompt = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    _pwaPrompt = e;
-    // Show your install button
-    const btn = document.getElementById('pwa-install-btn');
-    if (btn) btn.style.display = 'block';
-  });
 
-  window.triggerPWAInstall = function() {
-    if (!_pwaPrompt) return;
-    _pwaPrompt.prompt();
-    _pwaPrompt.userChoice.then(() => { _pwaPrompt = null; });
-  };
-</script>
 <script type="module">
 // Multi-CDN loader — gstatic is sometimes blocked inside preview iframes (CSP/network).
 // Falls back to esm.sh and jsdelivr so Firebase still initialises.
@@ -563,7 +548,7 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .bti:hover{background:rgba(255,255,255,.1);}
 
 /* ADMIN */
-#s-admin { background: var(--bg); flex-direction: column; }
+#s-admin{background:var(--bg);flex-direction:column;}
 .abody{flex:1;display:flex;flex-direction:column;min-height:0;padding:0;width:100%;max-width:none;}
 .admin-layout{flex:1;min-height:0;}
 .admin-content{max-width:940px;}
@@ -1113,13 +1098,12 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       </div>
     </div>
     <button class="btnp" id="lbtn" onclick="doLogin()">প্রবেশ করুন →</button>
-<!-- PWA Install Button -->
-<button id="pwa-install-btn" onclick="triggerPWAInstall()"
-  style="display:none; margin-top:12px; width:100%; padding:13px;
-  background:#00c896; color:#fff; border:none; border-radius:14px;
-  font-size:15px; font-weight:700; cursor:pointer;">
-  📲 Install App
-</button>
+    <button id="pwa-install-btn" onclick="triggerPWAInstall()"
+      style="display:none;margin-top:12px;width:100%;padding:13px;
+      background:#00c896;color:#fff;border:none;border-radius:14px;
+      font-size:15px;font-weight:700;cursor:pointer;">
+      📲 Install App
+    </button>
   </div>
 </div>
 
@@ -2362,6 +2346,11 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       <div id="t-hw-list"></div>
     </div>
 
+    <!-- Quiz Tab (Teacher) -->
+    <div id="t-tab-quiz" style="display:none">
+      <div class="t-section-label" style="margin-top:4px">🧠 Create AI Quiz</div>
+      <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px;padding:0 2px">Upload an image or PDF → AI extracts text and generates quiz questions automatically.</p>
+
       <!-- Step 1: Upload -->
       <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:12px;">
         <div style="font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:10px;">📤 Step 1: Upload Study Material</div>
@@ -2602,14 +2591,6 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     <div class="rmsg" id="r-msg"></div>
     <button class="rok" onclick="dismissRem()">বুঝেছি! 👍</button>
   </div>
-</div>
-<!-- AUTO-UPDATE BANNER -->
-<div id="update-banner">
-  <div class="ubanner-icon">🚀</div>
-  <div class="ubanner-title">নতুন আপডেট এসেছে!</div>
-  <div class="ubanner-sub">New features are ready. Tap to update now.</div>
-  <button class="ubanner-btn" onclick="applyUpdate()">⚡ Update Now</button>
-  <span class="ubanner-skip" onclick="snoozeUpdate()">Later (remind in 5 min)</span>
 </div>
 
 <!-- FINANCE EDIT MODAL (Admin) -->
@@ -7726,5 +7707,26 @@ window._attQueuedWrite   = window._attQueuedWrite;
   animation: confettiFall linear infinite;
 }
 </style>
+
+<!-- ══ PWA Install Prompt ══ -->
+<script>
+  let _pwaPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    _pwaPrompt = e;
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'block';
+  });
+  window.addEventListener('appinstalled', () => {
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'none';
+    _pwaPrompt = null;
+  });
+  window.triggerPWAInstall = function () {
+    if (!_pwaPrompt) return;
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(() => { _pwaPrompt = null; });
+  };
+</script>
 </body>
 </html>
