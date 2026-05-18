@@ -110,7 +110,22 @@ window._qrcodeReady=true;</script>
   });
 })();
 </script>
+<script>
+  let _pwaPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    _pwaPrompt = e;
+    // Show your install button
+    const btn = document.getElementById('pwa-install-btn');
+    if (btn) btn.style.display = 'block';
+  });
 
+  window.triggerPWAInstall = function() {
+    if (!_pwaPrompt) return;
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(() => { _pwaPrompt = null; });
+  };
+</script>
 <script type="module">
 // Multi-CDN loader — gstatic is sometimes blocked inside preview iframes (CSP/network).
 // Falls back to esm.sh and jsdelivr so Firebase still initialises.
@@ -548,7 +563,7 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .bti:hover{background:rgba(255,255,255,.1);}
 
 /* ADMIN */
-#s-admin{background:var(--bg);display:flex;flex-direction:column;}
+#s-admin { background: var(--bg); flex-direction: column; }
 .abody{flex:1;display:flex;flex-direction:column;min-height:0;padding:0;width:100%;max-width:none;}
 .admin-layout{flex:1;min-height:0;}
 .admin-content{max-width:940px;}
