@@ -10,7 +10,7 @@
   const GEMINI_MODEL = 'gemini-2.0-flash';
   const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
   // ── Hardcoded Gemini API key — no user input needed ──
-  const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE'; // ← paste your key here
+  const GEMINI_API_KEY = 'AIzaSyDVImbmjRC3t9PK5jdXGawFUqgElgMgSL8'; // ← paste your key here
 
   // ── State ─────────────────────────────────────────────────────────────────────
   let _currentQuiz = null;
