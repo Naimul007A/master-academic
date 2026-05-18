@@ -22,15 +22,13 @@ self.addEventListener('message', event => {
 });
 
 // ── INSTALL: cache core files ──────────────────────────
-// NOTE: We do NOT call self.skipWaiting() here.
-// The new SW stays in 'waiting' state until the user taps "Update Now"
-// in the update banner, which sends the SKIP_WAITING message above.
-// This prevents silent mid-session reloads that lose user state.
+// skipWaiting() here means the new SW activates immediately on install.
+// The page will reload via controllerchange in sw-updater.js.
 self.addEventListener('install', event => {
+  self.skipWaiting(); // ← auto-activate, no waiting
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(PRECACHE_URLS).catch(err => {
-        // Don't fail install if some optional resources are missing
         console.warn('[SW] Pre-cache partial failure:', err);
       });
     })
