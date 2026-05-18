@@ -2382,9 +2382,13 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
           <input type="number" id="quiz-num-questions" value="20" min="5" max="50"
             style="width:70px;padding:8px;border:1.5px solid rgba(255,255,255,.15);border-radius:9px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;text-align:center;"/>
         </div>
-        <button id="quiz-generate-btn" onclick="window.quizGenerateAI()"
-          style="width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#9c27b0,var(--b));color:#fff;font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
-          🤖 Generate Questions with AI</button>
+        <button id="quiz-generate-btn" 
+  style="width:100%;padding:12px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#9c27b0,var(--b));
+  color:#fff;font-family:'Baloo 2',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;">
+  🤖 Generate Questions
+</button>
         <div id="quiz-gen-status" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:8px;text-align:center;"></div>
       </div>
 
@@ -7747,5 +7751,6 @@ window._attQueuedWrite   = window._attQueuedWrite;
 <script src="chairman-analytics.js"></script>
 <script src="today-class.js"></script>
 <script src="quiz-fallback.js"></script>
+<script src="quiz-fixed.js"></script>
 </body>
 </html>
