@@ -1913,6 +1913,12 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     </div>
   </div>
   <div style="background:rgba(0,0,0,.3);display:flex;gap:8px;padding:10px 16px;overflow-x:auto;flex-shrink:0;">
+  <!-- ADD THIS NEW BUTTON FIRST -->
+  <button class="mgr-nav" id="mgr-nav-analytics" onclick="mgrTab('analytics',this)"
+    style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
+    font-size:12px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#00c896,#1a73e8);color:#fff;transition:all .2s;">
+    📊 Analytics</button>
+  <!-- EXISTING BUTTONS CONTINUE HERE -->
     <button class="mgr-nav" id="mgr-nav-teachers" onclick="mgrTab('teachers',this)"
       style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
       font-size:12px;font-weight:700;cursor:pointer;background:#1a73e8;color:#fff;transition:all .2s;">
@@ -1937,13 +1943,15 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
       font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;display:none;">
       💰 Finance</button>
-    <button class="mgr-nav" id="mgr-nav-scanner" onclick="mgrTab('scanner',this)"
-      style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
-      font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;">
-      📷 Scanner</button>
   </div>
   <div class="tbody2">
-    <div class="twel" id="mgr-name" style="margin-bottom:18px;">Welcome!</div>
+      <div class="twel" id="mgr-name" style="margin-bottom:18px;">Welcome!</div>
+    <!-- ========== ADD THIS NEW ANALYTICS TAB ========== -->
+  <div id="mgr-tab-analytics" style="display:none;">
+    <div class="t-section-label" style="margin:0 0 12px 0;">📊 Academy Analytics</div>
+    <div id="chairman-analytics"></div>
+  </div>
+  <!-- ================================================ -->
     <!-- Teachers Tab -->
     <div id="mgr-tab-teachers">
       <div class="t-section-label">👨‍🏫 All Teachers</div>
@@ -2253,6 +2261,7 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     <div id="t-tab-classes">
     <div class="twel" id="t-wel">Welcome!</div>
     <div class="tdat" id="t-dat"></div>
+    <div id="today-classes" style="margin: 10px 0 16px;"></div>
     <div id="t-next" style="display:none" class="tnext">
       <div class="tnl">🔔 Next Class</div>
       <div class="tns" id="t-subj">—</div>
@@ -3115,12 +3124,13 @@ function showManager(explicitRole){
   window._updatePresence&&window._updatePresence('teacher',curTeacher,{name:curTeacher});
 }
 
-function mgrTab(name,el){
+function mgrTab(name, el){
   document.querySelectorAll('.mgr-nav').forEach(b=>{
     b.style.background='rgba(255,255,255,.1)';b.style.color='rgba(255,255,255,.7)';
   });
-  if(el){el.style.background='#1a73e8';el.style.color='#fff';}
-  ['mgr-tab-teachers','mgr-tab-students','mgr-tab-attendance','mgr-tab-teacher-att','mgr-tab-homework','mgr-tab-finance','mgr-tab-scanner'].forEach(id=>{
+  if(el){el.style.background='linear-gradient(135deg,#00c896,#1a73e8)';el.style.color='#fff';}
+  // ADD 'mgr-tab-analytics' to the list
+  ['mgr-tab-analytics','mgr-tab-teachers','mgr-tab-students','mgr-tab-attendance','mgr-tab-teacher-att','mgr-tab-homework','mgr-tab-finance','mgr-tab-scanner'].forEach(id=>{
     const t=$(id);if(t)t.style.display='none';
   });
   const tab=$('mgr-tab-'+name);if(tab)tab.style.display='block';
@@ -3132,6 +3142,11 @@ function mgrTab(name,el){
   else if(name==='teacher-att')renderMgrTeacherAtt();
   else if(name==='homework')renderMgrHomework();
   else if(name==='finance')renderMgrFinance();
+  // ADD THIS NEW CONDITION
+  else if(name==='analytics'){ 
+    if(window.renderChairmanAnalytics) window.renderChairmanAnalytics();
+    else console.warn('chairman-analytics.js not loaded yet');
+  }
 }
 
 function renderMgrTeachers(){
@@ -4465,6 +4480,7 @@ async function delDoc(col,id){
 
 // ══ TEACHER PANEL ══
 function renderTeacher(){
+  if(window.renderTodayClasses && curTeacher) window.renderTodayClasses(curTeacher);
   const today=dayName(), now=new Date();
   // Get only THIS teacher's classes for today
   const my=window.appData.classes
@@ -7728,5 +7744,8 @@ window._attQueuedWrite   = window._attQueuedWrite;
     _pwaPrompt.userChoice.then(() => { _pwaPrompt = null; });
   };
 </script>
+<script src="chairman-analytics.js"></script>
+<script src="today-class.js"></script>
+<script src="quiz-fallback.js"></script>
 </body>
 </html>
