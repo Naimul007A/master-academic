@@ -270,37 +270,16 @@
     container.innerHTML = `
       <div style="font-family:'Baloo 2',sans-serif; color:${T.text};">
 
-        <!-- Header -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
-          <div style="font-weight:800; font-size:18px; color:${T.text};">📚 Lesson Plans — Overview</div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button id="alp-export-week"
-              data-from="${wr.from}" data-to="${wr.to}" data-label="Weekly"
-              style="${exportBtnStyle('#1a73e8')}">⬇ Weekly</button>
-            <button id="alp-export-month"
-              data-from="${mr.from}" data-to="${mr.to}" data-label="Monthly"
-              style="${exportBtnStyle('#a855f7')}">⬇ Monthly</button>
-            <button id="alp-export-custom"
-              style="${exportBtnStyle('#ff9800')}">⬇ Custom Range</button>
-          </div>
-        </div>
-
-        <!-- Filters -->
-        <div style="
-          display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;
-        ">
-          <select id="alp-f-teacher" style="${selectStyle(T)}">
-            <option value="">All Teachers</option>
-          </select>
-          <input id="alp-f-class" type="text" placeholder="Filter by class…" style="${inputStyle(T)}"/>
-          <input id="alp-f-from" type="date" style="${inputStyle(T)}" title="From date"/>
-          <input id="alp-f-to"   type="date" style="${inputStyle(T)}" title="To date"/>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
-          <button id="alp-preset-today"   style="${presetBtn(T)}">Today</button>
-          <button id="alp-preset-week"    style="${presetBtn(T)}">This Week</button>
-          <button id="alp-preset-month"   style="${presetBtn(T)}">This Month</button>
-          <button id="alp-preset-clear"   style="${presetBtn(T)}">All Time</button>
+        <!-- Export buttons only — header/filters removed (overview is on Dashboard) -->
+        <div style="display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+          <button id="alp-export-week"
+            data-from="${wr.from}" data-to="${wr.to}" data-label="Weekly"
+            style="${exportBtnStyle('#1a73e8')}">⬇ Weekly</button>
+          <button id="alp-export-month"
+            data-from="${mr.from}" data-to="${mr.to}" data-label="Monthly"
+            style="${exportBtnStyle('#a855f7')}">⬇ Monthly</button>
+          <button id="alp-export-custom"
+            style="${exportBtnStyle('#ff9800')}">⬇ Custom Range</button>
         </div>
 
         <!-- List -->
@@ -315,9 +294,12 @@
 
     waitForFirebase(() => {
       startListener();
-      _populateTeacherDrop();
-      // Default: this week
-      _applyPreset(wr.from, wr.to);
+      // Show all plans (no filter state active)
+      _state.teacher = '';
+      _state.class = '';
+      _state.from = '';
+      _state.to = '';
+      _rerender();
     });
   };
 
@@ -330,27 +312,8 @@
   }
 
   function _wireFilters(container, wr, mr) {
-    const onChange = () => {
-      _state.teacher = (document.getElementById('alp-f-teacher') || {}).value || '';
-      _state.class   = (document.getElementById('alp-f-class')   || {}).value || '';
-      _state.from    = (document.getElementById('alp-f-from')    || {}).value || '';
-      _state.to      = (document.getElementById('alp-f-to')      || {}).value || '';
-      _rerender();
-    };
-
+    // Filters removed — overview is on Dashboard. Wire export buttons only.
     setTimeout(() => {
-      ['alp-f-teacher','alp-f-class','alp-f-from','alp-f-to'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', onChange);
-      });
-
-      const preset = (from, to) => _applyPreset(from, to);
-      const t = todayStr();
-      document.getElementById('alp-preset-today')  ?.addEventListener('click', () => preset(t, t));
-      document.getElementById('alp-preset-week')   ?.addEventListener('click', () => preset(wr.from, wr.to));
-      document.getElementById('alp-preset-month')  ?.addEventListener('click', () => preset(mr.from, mr.to));
-      document.getElementById('alp-preset-clear')  ?.addEventListener('click', () => { _applyPreset('', ''); });
-
       document.getElementById('alp-export-week') ?.addEventListener('click', function () {
         _export(this.dataset.from, this.dataset.to, 'Weekly');
       });
@@ -358,8 +321,8 @@
         _export(this.dataset.from, this.dataset.to, 'Monthly');
       });
       document.getElementById('alp-export-custom')?.addEventListener('click', () => {
-        const f = _state.from || prompt('From date (YYYY-MM-DD):');
-        const t2 = _state.to  || prompt('To date (YYYY-MM-DD):');
+        const f  = prompt('From date (YYYY-MM-DD):');
+        const t2 = prompt('To date (YYYY-MM-DD):');
         if (f && t2) _export(f, t2, 'Custom');
       });
     }, 0);
