@@ -48,13 +48,13 @@
     text-transform:uppercase;
     letter-spacing:.6px;
     margin-top:4px;
-    opacity:.7;
+    opacity:.90;
   }
   .dash-kpi-sub{
     font-size:10px;
     font-weight:600;
     margin-top:3px;
-    opacity:.55;
+    opacity:.85;
   }
   .dash-kpi-glow{
     position:absolute;right:-18px;top:-18px;
@@ -456,14 +456,14 @@ window.renderDashboard = function(containerId, roleHint){
   const borderC  = isDark ? 'rgba(255,255,255,.1)' : '#e8eaed';
 
   /* KPI colours */
-  const kpiRevBg  = isDark ? 'linear-gradient(135deg,#00513a,#00875a)' : 'linear-gradient(135deg,#e8f5e9,#c8e6c9)';
-  const kpiExpBg  = isDark ? 'linear-gradient(135deg,#5a1212,#8b1c1c)' : 'linear-gradient(135deg,#ffebee,#ffcdd2)';
-  const kpiNetBg  = isDark ? 'linear-gradient(135deg,#0a2a5e,#1a4a9e)' : 'linear-gradient(135deg,#e3f2fd,#bbdefb)';
-  const kpiAttBg  = isDark ? 'linear-gradient(135deg,#3a1a6e,#5e2a9e)' : 'linear-gradient(135deg,#f3e5f5,#e1bee7)';
-  const kpiRevTxt = isDark ? '#90ffd6' : '#1b5e20';
-  const kpiExpTxt = isDark ? '#ff9999' : '#b71c1c';
-  const kpiNetTxt = isDark ? '#90caff' : '#0d47a1';
-  const kpiAttTxt = isDark ? '#ce93d8' : '#6a1b9a';
+  const kpiRevBg  = 'linear-gradient(135deg,#00513a,#00875a)';
+  const kpiExpBg  = 'linear-gradient(135deg,#5a1212,#8b1c1c)';
+  const kpiNetBg  = 'linear-gradient(135deg,#0a2a5e,#1a4a9e)';
+  const kpiAttBg  = 'linear-gradient(135deg,#3a1a6e,#5e2a9e)';
+  const kpiRevTxt = isDark ? '#90ffd6' : '#c8ffe8';
+  const kpiExpTxt = isDark ? '#ff9999' : '#ffbbbb';
+  const kpiNetTxt = isDark ? '#90caff' : '#c5e3ff';
+  const kpiAttTxt = isDark ? '#ce93d8' : '#e8c5ff';
 
   const netSign   = d.netBal >= 0 ? '' : '-';
   const netAmt    = '৳'+_DC.fmt(Math.abs(d.netBal));
@@ -514,10 +514,10 @@ window.renderDashboard = function(containerId, roleHint){
     </div>
 
     <div class="dash-kpi-grid">
-      ${_kpi('🎓', d.students.length, 'Students', (window.appData.pending||[]).length+' pending approval', 'linear-gradient(135deg,#1a3a5e,#1a5e9e)', isDark?'#90caff':'#0d47a1', '#4499ff')}
-      ${_kpi('👨‍🏫', d.teachers.length, 'Teachers', tAttLabel+' teacher att. this month', 'linear-gradient(135deg,#3a2a0a,#7a5a0a)', isDark?'#ffe082':'#e65100', '#ffbb00')}
-      ${_kpi('⚠️', d.dueCount, 'Due Notices', 'Outstanding fee alerts', 'linear-gradient(135deg,#4a1a00,#8a3a00)', isDark?'#ffcc80':'#e65100', '#ff8800')}
-      ${_kpi('📝', d.hwDefaultersCount, 'HW Defaulters', 'Across all submissions', 'linear-gradient(135deg,#1a003a,#4a0080)', isDark?'#ea80fc':'#7b1fa2', '#cc44ff')}
+      ${_kpi('🎓', d.students.length, 'Students', (window.appData.pending||[]).length+' pending approval', 'linear-gradient(135deg,#1a3a5e,#1a5e9e)', '#b3d9ff', '#4499ff')}
+      ${_kpi('👨‍🏫', d.teachers.length, 'Teachers', tAttLabel+' teacher att. this month', 'linear-gradient(135deg,#3a2a0a,#7a5a0a)', '#ffe082', '#ffbb00')}
+      ${_kpi('⚠️', d.dueCount, 'Due Notices', 'Outstanding fee alerts', 'linear-gradient(135deg,#4a1a00,#8a3a00)', '#ffcc80', '#ff8800')}
+      ${_kpi('📝', d.hwDefaultersCount, 'HW Defaulters', 'Across all submissions', 'linear-gradient(135deg,#1a003a,#4a0080)', '#e8a0ff', '#cc44ff')}
     </div>
 
     <!-- ── Finance Charts ── -->
