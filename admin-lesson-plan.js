@@ -124,6 +124,30 @@
   const ACCENT = '#00c896';
   const CARD_BG = 'rgba(255,255,255,0.05)';
   const SUBJECT_COLORS = ['#00c896','#1a73e8','#ff9800','#e84040','#a855f7','#ec4899','#14b8a6','#f59e0b'];
+
+  /* Detect panel theme: admin uses light bg, manager/chairman use dark */
+  function _isLight() {
+    const el = document.getElementById(_containerId);
+    if (!el) return false;
+    const panel = el.closest('#s-admin, .apanel[id^="ap-"]');
+    if (panel && (panel.closest('#s-admin') || panel.id === 'ap-lesson-plans')) return true;
+    return false;
+  }
+
+  function _theme() {
+    const light = _isLight();
+    return {
+      text:    light ? '#1a2340' : '#ffffff',
+      textMut: light ? '#7a8499' : 'rgba(255,255,255,0.55)',
+      cardBg:  light ? '#f8f9fa' : 'rgba(255,255,255,0.05)',
+      border:  light ? '#e8eaed' : 'rgba(255,255,255,0.09)',
+      inputBg: light ? '#fff'    : 'rgba(255,255,255,0.07)',
+      inputBorder: light ? '#d0d5de' : 'rgba(255,255,255,0.12)',
+      btnBg:   light ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.06)',
+      btnBorder: light ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.10)',
+      btnColor: light ? '#1a2340' : 'rgba(255,255,255,0.7)',
+    };
+  }
   function subjectColor(subj) {
     let h = 0;
     for (let i = 0; i < subj.length; i++) h = (h * 31 + subj.charCodeAt(i)) >>> 0;
@@ -134,6 +158,7 @@
     const plans = _filtered();
     const grouped = _groupBySubjectDate(plans);
     const subjects = Object.keys(grouped).sort();
+    const T = _theme();
 
     // ── Stats bar
     const totalDays = new Set(plans.map(p => p.date)).size;
@@ -142,18 +167,18 @@
     let html = `
       <!-- Stats -->
       <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;">
-        ${statCard('📋', plans.length, 'Total Plans')}
-        ${statCard('📚', subjects.length, 'Subjects')}
-        ${statCard('🏫', totalClasses, 'Classes')}
-        ${statCard('📅', totalDays, 'Days Covered')}
+        ${statCard('📋', plans.length, 'Total Plans', T)}
+        ${statCard('📚', subjects.length, 'Subjects', T)}
+        ${statCard('🏫', totalClasses, 'Classes', T)}
+        ${statCard('📅', totalDays, 'Days Covered', T)}
       </div>`;
 
     if (!subjects.length) {
       html += `
-        <div style="background:${CARD_BG}; border-radius:16px; padding:32px; text-align:center;">
+        <div style="background:${T.cardBg}; border-radius:16px; padding:32px; text-align:center;border:1px solid ${T.border};">
           <div style="font-size:36px; margin-bottom:10px;">📭</div>
-          <div style="font-weight:800; font-size:15px;">No lesson plans found</div>
-          <div style="font-size:12px; opacity:0.5; margin-top:4px;">Adjust the filters above</div>
+          <div style="font-weight:800; font-size:15px;color:${T.text};">No lesson plans found</div>
+          <div style="font-size:12px; color:${T.textMut}; margin-top:4px;">Adjust the filters above</div>
         </div>`;
     } else {
       subjects.forEach(subj => {
@@ -172,7 +197,7 @@
             ">
               <div style="flex:1;">
                 <div style="font-weight:800; font-size:16px; color:${color};">${escHtml(subj)}</div>
-                <div style="font-size:11px; opacity:0.6; margin-top:2px;">
+                <div style="font-size:11px; color:${T.textMut}; margin-top:2px;">
                   ${totalEntries} session${totalEntries !== 1 ? 's' : ''} across ${dates.length} day${dates.length !== 1 ? 's' : ''}
                 </div>
               </div>
@@ -186,22 +211,22 @@
           const dayLabel = dayPlans[0].day || '';
           html += `
               <div style="margin-bottom:10px;">
-                <div style="font-size:10px; font-weight:700; opacity:0.4; letter-spacing:1px; margin-bottom:6px;">
+                <div style="font-size:10px; font-weight:700; color:${T.textMut}; letter-spacing:1px; margin-bottom:6px;">
                   ${dayLabel.toUpperCase()} ${date}
                 </div>`;
 
           dayPlans.forEach(plan => {
             html += `
                 <div style="
-                  background:${CARD_BG}; border-radius:12px; padding:12px 14px;
-                  margin-bottom:8px; border-left:3px solid ${color}55;
+                  background:${T.cardBg}; border-radius:12px; padding:12px 14px;
+                  margin-bottom:8px; border:1px solid ${T.border}; border-left:3px solid ${color}55;
                 ">
                   <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
                     <div style="flex:1;">
-                      <div style="font-size:13px; font-weight:700;">${escHtml(plan.class)}${plan.time ? ' <span style="opacity:0.5; font-weight:500;">• ' + fmt12(plan.time) + '</span>' : ''}</div>
+                      <div style="font-size:13px; font-weight:700; color:${T.text};">${escHtml(plan.class)}${plan.time ? ' <span style="color:' + T.textMut + '; font-weight:500;">• ' + fmt12(plan.time) + '</span>' : ''}</div>
                       <div style="font-size:13px; color:${color}; font-weight:700; margin-top:4px;">📖 ${escHtml(plan.topic)}</div>
-                      ${plan.teacher ? `<div style="font-size:11px; opacity:0.5; margin-top:3px;">👤 ${escHtml(plan.teacher)}</div>` : ''}
-                      ${plan.notes  ? `<div style="font-size:11px; opacity:0.55; margin-top:5px; line-height:1.5;">${escHtml(plan.notes)}</div>` : ''}
+                      ${plan.teacher ? `<div style="font-size:11px; color:${T.textMut}; margin-top:3px;">👤 ${escHtml(plan.teacher)}</div>` : ''}
+                      ${plan.notes  ? `<div style="font-size:11px; color:${T.textMut}; margin-top:5px; line-height:1.5;">${escHtml(plan.notes)}</div>` : ''}
                     </div>
                   </div>
                 </div>`;
@@ -218,15 +243,16 @@
     if (listEl) listEl.innerHTML = html;
   }
 
-  function statCard(icon, value, label) {
+  function statCard(icon, value, label, T) {
+    const theme = T || { cardBg: 'rgba(255,255,255,0.05)', text: '#fff', textMut: 'rgba(255,255,255,0.5)', border: 'rgba(255,255,255,0.09)' };
     return `
       <div style="
-        flex:1; min-width:80px; background:${CARD_BG}; border-radius:14px;
-        padding:12px; text-align:center;
+        flex:1; min-width:80px; background:${theme.cardBg}; border-radius:14px;
+        padding:12px; text-align:center; border:1px solid ${theme.border};
       ">
         <div style="font-size:20px;">${icon}</div>
-        <div style="font-size:20px; font-weight:800; margin:2px 0;">${value}</div>
-        <div style="font-size:10px; opacity:0.5; font-weight:600;">${label}</div>
+        <div style="font-size:20px; font-weight:800; margin:2px 0; color:${theme.text};">${value}</div>
+        <div style="font-size:10px; color:${theme.textMut}; font-weight:600;">${label}</div>
       </div>`;
   }
 
@@ -239,13 +265,14 @@
 
     const wr = weekRange();
     const mr = monthRange();
+    const T = _theme();
 
     container.innerHTML = `
-      <div style="font-family:'Baloo 2',sans-serif; color:#fff;">
+      <div style="font-family:'Baloo 2',sans-serif; color:${T.text};">
 
         <!-- Header -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
-          <div style="font-weight:800; font-size:18px;">📚 Lesson Plans — Overview</div>
+          <div style="font-weight:800; font-size:18px; color:${T.text};">📚 Lesson Plans — Overview</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button id="alp-export-week"
               data-from="${wr.from}" data-to="${wr.to}" data-label="Weekly"
@@ -262,23 +289,23 @@
         <div style="
           display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;
         ">
-          <select id="alp-f-teacher" style="${selectStyle()}">
+          <select id="alp-f-teacher" style="${selectStyle(T)}">
             <option value="">All Teachers</option>
           </select>
-          <input id="alp-f-class" type="text" placeholder="Filter by class…" style="${inputStyle()}"/>
-          <input id="alp-f-from" type="date" style="${inputStyle()}" title="From date"/>
-          <input id="alp-f-to"   type="date" style="${inputStyle()}" title="To date"/>
+          <input id="alp-f-class" type="text" placeholder="Filter by class…" style="${inputStyle(T)}"/>
+          <input id="alp-f-from" type="date" style="${inputStyle(T)}" title="From date"/>
+          <input id="alp-f-to"   type="date" style="${inputStyle(T)}" title="To date"/>
         </div>
         <div style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
-          <button id="alp-preset-today"   style="${presetBtn()}">Today</button>
-          <button id="alp-preset-week"    style="${presetBtn()}">This Week</button>
-          <button id="alp-preset-month"   style="${presetBtn()}">This Month</button>
-          <button id="alp-preset-clear"   style="${presetBtn()}">All Time</button>
+          <button id="alp-preset-today"   style="${presetBtn(T)}">Today</button>
+          <button id="alp-preset-week"    style="${presetBtn(T)}">This Week</button>
+          <button id="alp-preset-month"   style="${presetBtn(T)}">This Month</button>
+          <button id="alp-preset-clear"   style="${presetBtn(T)}">All Time</button>
         </div>
 
         <!-- List -->
         <div id="alp-list">
-          <div style="text-align:center; padding:20px; opacity:0.4;">Loading…</div>
+          <div style="text-align:center; padding:20px; color:${T.textMut};">Loading…</div>
         </div>
 
       </div>
@@ -504,18 +531,20 @@
 
   // ── Style helpers ──────────────────────────────────────────────────────────
 
-  function selectStyle() {
+  function selectStyle(T) {
+    const theme = T || {};
     return `
-      width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
-      color:#fff; border-radius:12px; padding:10px 14px; font-size:13px;
+      width:100%; background:${theme.inputBg||'rgba(255,255,255,0.07)'}; border:1px solid ${theme.inputBorder||'rgba(255,255,255,0.12)'};
+      color:${theme.text||'#fff'}; border-radius:12px; padding:10px 14px; font-size:13px;
       font-family:'Baloo 2',sans-serif; outline:none; cursor:pointer;
     `;
   }
 
-  function inputStyle() {
+  function inputStyle(T) {
+    const theme = T || {};
     return `
-      width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12);
-      color:#fff; border-radius:12px; padding:10px 14px; font-size:13px;
+      width:100%; background:${theme.inputBg||'rgba(255,255,255,0.07)'}; border:1px solid ${theme.inputBorder||'rgba(255,255,255,0.12)'};
+      color:${theme.text||'#fff'}; border-radius:12px; padding:10px 14px; font-size:13px;
       font-family:'Baloo 2',sans-serif; outline:none; box-sizing:border-box;
     `;
   }
@@ -528,10 +557,11 @@
     `;
   }
 
-  function presetBtn() {
+  function presetBtn(T) {
+    const theme = T || {};
     return `
-      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
-      color:rgba(255,255,255,0.7); border-radius:8px; padding:6px 12px;
+      background:${theme.btnBg||'rgba(255,255,255,0.06)'}; border:1px solid ${theme.btnBorder||'rgba(255,255,255,0.1)'};
+      color:${theme.btnColor||'rgba(255,255,255,0.7)'}; border-radius:8px; padding:6px 12px;
       font-family:'Baloo 2',sans-serif; font-weight:700; font-size:12px;
       cursor:pointer; white-space:nowrap;
     `;
