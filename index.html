@@ -1870,7 +1870,7 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     <div class="apanel" id="ap-quiz">
       <div class="card">
         <h3>🧠 Quiz Management</h3>
-        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">View all published quizzes, check results, and manage quiz status.</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Manage quizzes — toggle active/closed, view all submissions and detailed answers per student.</p>
         <button onclick="window.loadAdminQuizList()" class="btn" style="margin-bottom:14px;">🔄 Refresh Quiz List</button>
         <div id="quiz-admin-list-admin"><div style="color:var(--muted);text-align:center;padding:16px">Tap Refresh to load.</div></div>
         <div id="quiz-leaderboard-panel-admin" style="display:none;margin-top:14px">
@@ -2486,13 +2486,24 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
           <input type="number" id="quiz-num-questions" value="20" min="5" max="50"
             style="width:70px;padding:8px;border:1.5px solid rgba(255,255,255,.15);border-radius:9px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;outline:none;text-align:center;"/>
         </div>
-        <button id="quiz-generate-btn" 
-  style="width:100%;padding:12px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#9c27b0,var(--b));
-  color:#fff;font-family:'Baloo 2',sans-serif;
-  font-size:13px;font-weight:700;cursor:pointer;">
-  🤖 Generate Questions
-</button>
+        <div id="quiz-question-types" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Question Types</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;color:#fff;background:rgba(26,115,232,.2);">
+              <input type="checkbox" value="mcq" checked style="accent-color:#1a73e8;width:14px;height:14px;"> MCQ
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;color:#fff;background:rgba(255,152,0,.2);">
+              <input type="checkbox" value="truefalse" checked style="accent-color:#ff9800;width:14px;height:14px;"> True / False
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid rgba(255,255,255,.15);border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;color:#fff;background:rgba(156,39,176,.2);">
+              <input type="checkbox" value="fillblank" style="accent-color:#9c27b0;width:14px;height:14px;"> Fill in Blank
+            </label>
+          </div>
+        </div>
+        <button id="quiz-generate-btn" onclick="window.quizGenerateAI()"
+          style="width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#9c27b0,var(--b));color:#fff;font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+          🤖 Generate Questions
+        </button>
         <div id="quiz-gen-status" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:8px;text-align:center;"></div>
       </div>
 
@@ -2626,6 +2637,10 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       <div class="stitle">🧠 Active Quizzes</div>
       <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Tap a quiz below to open it. Your phone number is used to verify one attempt per person.</p>
       <div id="sp-quiz-list"><div style="color:var(--muted);text-align:center;padding:24px">Tap the Quiz tab to load active quizzes.</div></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)">
+        <div class="stitle" style="margin-bottom:10px">📊 My Quiz Results</div>
+        <div id="sp-quiz-results"><div style="color:var(--muted);text-align:center;padding:16px;font-size:13px">Loading your results...</div></div>
+      </div>
     </div>
   </div>
 </div>
