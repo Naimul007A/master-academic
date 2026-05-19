@@ -99,7 +99,7 @@
     font-family:'Baloo 2',sans-serif; box-sizing:border-box; outline:none;
   `;
 
-  const LBL = `font-size:11px; opacity:0.55; font-weight:700;
+  const LBL = `font-size:11px; opacity:0.85; font-weight:700;
     display:block; margin-bottom:6px; letter-spacing:0.5px;`;
 
   function injectModal() {
@@ -138,7 +138,7 @@
           <div style="font-size:20px;">📅</div>
           <div>
             <div style="font-weight:800; font-size:14px;" id="lp-date-display"></div>
-            <div style="font-size:11px; opacity:0.55;">Date set automatically to today</div>
+            <div style="font-size:11px; opacity:0.75;">Date set automatically to today</div>
           </div>
         </div>
 
@@ -377,7 +377,7 @@
         ">
           <div style="font-size:28px; margin-bottom:8px;">🎉</div>
           <div style="font-weight:700; font-size:14px;">No classes scheduled today</div>
-          <div style="font-size:12px; opacity:0.5; margin-top:4px;">${dateLabel}</div>
+          <div style="font-size:12px; opacity:0.72; margin-top:4px;">${dateLabel}</div>
           <button onclick="window.openLessonPlanModal({})"
             style="
               margin-top:14px; background:rgba(255,255,255,0.07);
@@ -391,7 +391,7 @@
 
     let html = `
       <div style="
-        font-size:11px; font-weight:700; opacity:0.45; letter-spacing:1px;
+        font-size:11px; font-weight:700; opacity:0.75; letter-spacing:1px;
         margin-bottom:10px; padding-left:2px;
       ">TODAY — ${dateLabel.toUpperCase()}</div>`;
 
@@ -437,9 +437,9 @@
             </div>
             <div style="
               background:rgba(0,0,0,0.15); border-radius:8px; padding:7px 10px;
-              font-size:13px; font-weight:700;
+              font-size:13px; font-weight:700; color:#e0ffe8;
             ">📖 ${escHtml(plan.topic)}</div>
-            ${plan.notes ? `<div style="font-size:11px; opacity:0.5; margin-top:6px;">${escHtml(plan.notes)}</div>` : ''}
+            ${plan.notes ? `<div style="font-size:11px; opacity:0.72; margin-top:6px;">${escHtml(plan.notes)}</div>` : ''}
           </div>`;
       } else {
         // Not yet logged — show a tap-to-log card
@@ -458,7 +458,7 @@
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div>
                 <div style="font-weight:800; font-size:14px;">${escHtml(cls.subject)}</div>
-                <div style="font-size:12px; opacity:0.5; margin-top:2px;">${escHtml(clsName)}</div>
+                <div style="font-size:12px; opacity:0.75; margin-top:2px;">${escHtml(clsName)}</div>
               </div>
               <div style="display:flex; align-items:center; gap:10px;">
                 ${statusDot}
@@ -500,7 +500,7 @@
         <div style="background:rgba(255,255,255,0.04); border-radius:14px; padding:24px; text-align:center;">
           <div style="font-size:28px; margin-bottom:8px;">📋</div>
           <div style="font-weight:700;">No plans in history</div>
-          <div style="font-size:12px; opacity:0.45; margin-top:4px;">Log a class above to see it here</div>
+          <div style="font-size:12px; opacity:0.72; margin-top:4px;">Log a class above to see it here</div>
         </div>`;
       return;
     }
@@ -514,7 +514,7 @@
       const dayLbl = byDate[date][0].day || dayNameOf(date);
       html += `
         <div style="margin-bottom:4px;">
-          <div style="font-size:10px; font-weight:700; opacity:0.4; letter-spacing:1px; margin-bottom:7px; padding-left:2px;">
+          <div style="font-size:10px; font-weight:700; opacity:0.75; letter-spacing:1px; margin-bottom:7px; padding-left:2px;">
             ${dayLbl.toUpperCase()} — ${date}
           </div>`;
 
@@ -527,7 +527,7 @@
             <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:7px;">
               <div>
                 <div style="font-weight:800; font-size:14px;">${escHtml(plan.subject)}</div>
-                <div style="font-size:12px; opacity:0.55; margin-top:2px;">
+                <div style="font-size:12px; opacity:0.80; margin-top:2px;">
                   ${escHtml(plan.class)}${plan.time ? ' &bull; ' + fmt12(plan.time) : ''}
                 </div>
               </div>
@@ -548,7 +548,7 @@
               background:rgba(0,200,150,0.1); border-radius:8px; padding:7px 11px;
               font-size:13px; font-weight:700; color:#00e8a8;
             ">📖 ${escHtml(plan.topic)}</div>
-            ${plan.notes ? `<div style="font-size:11px; opacity:0.5; margin-top:7px; line-height:1.5;">${escHtml(plan.notes)}</div>` : ''}
+            ${plan.notes ? `<div style="font-size:11px; opacity:0.72; margin-top:7px; line-height:1.5;">${escHtml(plan.notes)}</div>` : ''}
           </div>`;
       });
 
