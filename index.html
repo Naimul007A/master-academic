@@ -7870,7 +7870,192 @@ window._attQueuedWrite   = window._attQueuedWrite;
 <script src="chairman-analytics.js"></script>
 <script src="today-class.js"></script>
 <script src="lesson-plan.js"></script>
-<script src="admin-lesson-plan.js"></script>
+<script src="admin-lesson-plan.js?v=2"></script>
+<script>
+// ── Inline override: remove filter UI from Lesson Plans page ──────────────
+// This runs after admin-lesson-plan.js loads and replaces renderAdminLessonPlans
+// so the Lesson Plans page shows ONLY export buttons + plan cards (no filter bar).
+(function() {
+  function _escHtml(str) {
+    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function _fmt12(t) {
+    if(!t) return '';
+    const [h,m]=t.split(':').map(Number);
+    return (h%12||12)+':'+(String(m).padStart(2,'0'))+(h>=12?' PM':' AM');
+  }
+  function _weekRange() {
+    const now=new Date(), day=now.getDay();
+    const sat=new Date(now); sat.setDate(now.getDate()-((day+1)%7));
+    const thu=new Date(sat); thu.setDate(sat.getDate()+5);
+    return {from:sat.toISOString().split('T')[0], to:thu.toISOString().split('T')[0]};
+  }
+  function _monthRange() {
+    const now=new Date();
+    return {
+      from:new Date(now.getFullYear(),now.getMonth(),1).toISOString().split('T')[0],
+      to:new Date(now.getFullYear(),now.getMonth()+1,0).toISOString().split('T')[0]
+    };
+  }
+  const SUBJECT_COLORS=['#00c896','#1a73e8','#ff9800','#e84040','#a855f7','#ec4899','#14b8a6','#f59e0b'];
+  function _sColor(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return SUBJECT_COLORS[h%SUBJECT_COLORS.length];}
+
+  window.renderAdminLessonPlans = function(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const wr = _weekRange(), mr = _monthRange();
+
+    // Render shell — export buttons only, no filter bar, no "Overview" heading
+    container.innerHTML = `
+      <div style="font-family:'Baloo 2',sans-serif;color:#1a2340;">
+        <div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button id="alp-export-week" data-from="${wr.from}" data-to="${wr.to}"
+            style="background:#1a73e822;border:1px solid #1a73e855;color:#1a73e8;border-radius:10px;padding:8px 14px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;cursor:pointer;">⬇ Weekly</button>
+          <button id="alp-export-month" data-from="${mr.from}" data-to="${mr.to}"
+            style="background:#a855f722;border:1px solid #a855f755;color:#a855f7;border-radius:10px;padding:8px 14px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;cursor:pointer;">⬇ Monthly</button>
+          <button id="alp-export-custom"
+            style="background:#ff980022;border:1px solid #ff980055;color:#ff9800;border-radius:10px;padding:8px 14px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;cursor:pointer;">⬇ Custom Range</button>
+        </div>
+        <div id="alp-list"><div style="text-align:center;padding:20px;color:#7a8499;">Loading…</div></div>
+      </div>`;
+
+    function _renderList() {
+      const plans = (window.appData && window.appData.lessonPlans) || [];
+      const listEl = document.getElementById('alp-list');
+      if (!listEl) return;
+      if (!plans.length) {
+        listEl.innerHTML = '<div style="text-align:center;padding:32px;color:#7a8499;">No lesson plans found.</div>';
+        return;
+      }
+      // Group by subject → date
+      const grouped = {};
+      plans.forEach(p => {
+        const s = p.subject||'Unknown';
+        if (!grouped[s]) grouped[s] = {};
+        if (!grouped[s][p.date]) grouped[s][p.date] = [];
+        grouped[s][p.date].push(p);
+      });
+      const subjects = Object.keys(grouped).sort();
+      let html = '';
+      // Stats row
+      const totalDays = new Set(plans.map(p=>p.date)).size;
+      const totalCls  = new Set(plans.map(p=>p.class)).size;
+      html += `<div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+        ${[['📋',plans.length,'Total Plans'],['📚',subjects.length,'Subjects'],['🏫',totalCls,'Classes'],['📅',totalDays,'Days']].map(([ic,v,lb])=>`
+          <div style="flex:1;min-width:80px;background:#f0f4f8;border-radius:14px;padding:12px;text-align:center;border:1px solid #e0e4ea;">
+            <div style="font-size:20px;">${ic}</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#1a2340;">${v}</div>
+            <div style="font-size:10px;color:#7a8499;font-weight:600;">${lb}</div>
+          </div>`).join('')}
+      </div>`;
+      subjects.forEach(subj => {
+        const color = _sColor(subj);
+        const dateMap = grouped[subj];
+        const dates = Object.keys(dateMap).sort((a,b)=>b.localeCompare(a));
+        const total = dates.reduce((s,d)=>s+dateMap[d].length,0);
+        html += `<div style="margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:12px 16px;border-radius:14px;background:${color}18;border-left:5px solid ${color};">
+            <div>
+              <div style="font-weight:800;font-size:16px;color:${color};">${_escHtml(subj)}</div>
+              <div style="font-size:11px;color:#7a8499;margin-top:2px;">${total} session${total!==1?'s':''} across ${dates.length} day${dates.length!==1?'s':''}</div>
+            </div>
+          </div>
+          <div style="padding-left:6px;">`;
+        dates.forEach(date => {
+          const dayPlans = dateMap[date];
+          const dayLbl = (dayPlans[0].day||'').toUpperCase();
+          html += `<div style="margin-bottom:10px;">
+            <div style="font-size:10px;font-weight:700;color:#7a8499;letter-spacing:1px;margin-bottom:6px;">${dayLbl} ${date}</div>`;
+          dayPlans.forEach(plan => {
+            html += `<div style="background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid #e8eaed;border-left:3px solid ${color}55;">
+              <div style="font-size:13px;font-weight:700;color:#1a2340;">${_escHtml(plan.class||'')}${plan.time?` <span style="color:#7a8499;font-weight:500;">· ${_fmt12(plan.time)}</span>`:''}
+              </div>
+              <div style="font-size:13px;color:${color};font-weight:700;margin-top:4px;">📖 ${_escHtml(plan.topic||'')}</div>
+              ${plan.teacher?`<div style="font-size:11px;color:#7a8499;margin-top:3px;">👤 ${_escHtml(plan.teacher)}</div>`:''}
+              ${plan.notes?`<div style="font-size:11px;color:#7a8499;margin-top:5px;line-height:1.5;">${_escHtml(plan.notes)}</div>`:''}
+            </div>`;
+          });
+          html += '</div>';
+        });
+        html += '</div></div>';
+      });
+      listEl.innerHTML = html;
+    }
+
+    // Wire export buttons
+    setTimeout(() => {
+      function _doExport(from, to, label) {
+        const plans = (window.appData&&window.appData.lessonPlans)||[];
+        const filtered = plans.filter(p=>(!from||p.date>=from)&&(!to||p.date<=to));
+        if (!filtered.length) { alert('No lesson plans in that range.'); return; }
+        const grouped={};
+        filtered.forEach(p=>{const s=p.subject||'Unknown';if(!grouped[s])grouped[s]={};if(!grouped[s][p.date])grouped[s][p.date]=[];grouped[s][p.date].push(p);});
+        const subjects=Object.keys(grouped).sort();
+        const COLS=['#00c896','#1a73e8','#ff9800','#e84040','#a855f7','#ec4899','#14b8a6','#f59e0b'];
+        const sCol=s=>{let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return COLS[h%COLS.length];};
+        const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>${label} Lesson Plan</title>
+          <style>*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Segoe UI,sans-serif;color:#1a1a2e;font-size:13px;}
+          .hdr{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;padding:24px 32px;}
+          .hdr h1{font-size:22px;font-weight:800;}.sub{font-size:13px;opacity:.65;margin-top:6px;}
+          .content{padding:24px 32px;}.subj{margin-bottom:28px;}
+          .stitle{font-size:16px;font-weight:800;padding:10px 16px;border-radius:10px;margin-bottom:10px;}
+          .dlbl{font-size:10px;font-weight:700;letter-spacing:1px;color:#666;text-transform:uppercase;margin:10px 0 5px;}
+          table{width:100%;border-collapse:collapse;margin-bottom:8px;}
+          th{background:#f0f0f5;font-size:11px;font-weight:700;padding:8px 12px;text-align:left;color:#555;}
+          td{padding:9px 12px;border-bottom:1px solid #f0f0f5;vertical-align:top;font-size:12px;}
+          .pbtn{position:fixed;top:16px;right:16px;background:#1a73e8;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+          @media print{.pbtn{display:none;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}</style>
+          </head><body>
+          <button class="pbtn" onclick="window.print()">🖨 Print / Save PDF</button>
+          <div class="hdr"><h1>📚 ${label} Lesson Plan</h1><div class="sub">${from} to ${to} &nbsp;·&nbsp; Generated: ${new Date().toLocaleDateString()}</div></div>
+          <div class="content">${subjects.map((s,si)=>{
+            const dm=grouped[s],dates=Object.keys(dm).sort(),c=sCol(s);
+            return \`<div class="subj"><div class="stitle" style="background:\${c}18;border-left:5px solid \${c};color:\${c};">\${s}</div>
+            \${dates.map(d=>{
+              const dp=dm[d];
+              return \`<div class="dlbl">\${(dp[0].day||'').toUpperCase()} — \${d}</div>
+              <table><thead><tr><th>Class</th><th>Time</th><th>Topic</th><th>Teacher</th><th>Notes</th></tr></thead><tbody>
+              \${dp.map(p=>\`<tr><td>\${p.class||''}</td><td>\${_fmt12(p.time)||'—'}</td><td style="font-weight:700;">\${p.topic||''}</td><td>\${p.teacher||''}</td><td style="color:#555;font-size:11px;">\${p.notes||'—'}</td></tr>\`).join('')}
+              </tbody></table>\`;}).join('')}</div>\`;}).join('')}</div></body></html>`;
+        const w=window.open(URL.createObjectURL(new Blob([html],{type:'text/html'})),'_blank');
+        if(!w) alert('Please allow popups.');
+      }
+      document.getElementById('alp-export-week') ?.addEventListener('click',function(){_doExport(this.dataset.from,this.dataset.to,'Weekly');});
+      document.getElementById('alp-export-month')?.addEventListener('click',function(){_doExport(this.dataset.from,this.dataset.to,'Monthly');});
+      document.getElementById('alp-export-custom')?.addEventListener('click',()=>{
+        const f=prompt('From date (YYYY-MM-DD):'), t=prompt('To date (YYYY-MM-DD):');
+        if(f&&t) _doExport(f,t,'Custom');
+      });
+    }, 0);
+
+    // Load data
+    function _tryRender() {
+      if (window._fbReady && window._db && window._fb) {
+        const {collection,onSnapshot,orderBy,query}=window._fb;
+        const q=query(collection(window._db,'lessonPlans'),orderBy('date','desc'));
+        onSnapshot(q,snap=>{
+          window.appData=window.appData||{};
+          window.appData.lessonPlans=snap.docs.map(d=>({id:d.id,...d.data()}));
+          _renderList();
+        },err=>console.warn('[LP]',err.message));
+      } else {
+        window.addEventListener('firebase-ready',()=>{
+          const {collection,onSnapshot,orderBy,query}=window._fb;
+          const q=query(collection(window._db,'lessonPlans'),orderBy('date','desc'));
+          onSnapshot(q,snap=>{
+            window.appData=window.appData||{};
+            window.appData.lessonPlans=snap.docs.map(d=>({id:d.id,...d.data()}));
+            _renderList();
+          },err=>console.warn('[LP]',err.message));
+        },{once:true});
+        // Also render immediately if data is already loaded
+        if(window.appData&&window.appData.lessonPlans) _renderList();
+      }
+    }
+    _tryRender();
+  };
+})();
+</script>
 <script src="quiz-fallback.js"></script>
 <script src="quiz-fixed.js"></script>
 </body>
