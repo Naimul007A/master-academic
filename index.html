@@ -1131,11 +1131,11 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     <h1>Master Academic</h1>
     <p>& Admission Care</p>
     <div class="rtabs">
-      <button class="rtab active" data-role="admin" onclick="window._safeSetRole('admin',this)">👑 Admin</button>
-      <button class="rtab" data-role="teacher" onclick="window._safeSetRole('teacher',this)">👨‍🏫 Teacher</button>
-      <button class="rtab" data-role="student" onclick="window._safeSetRole('student',this)">🎓 Student</button>
+<button class="rtab" data-role="admin" onclick="window._safeSetRole('admin',this)">👑 Admin</button>
+<button class="rtab" data-role="teacher" onclick="window._safeSetRole('teacher',this)">👨‍🏫 Teacher</button>
+<button class="rtab active" data-role="student" onclick="window._safeSetRole('student',this)">🎓 Student</button>
     </div>
-    <div id="lf-admin">
+   <div id="lf-admin" style="display:none">
       <input class="inp" type="text" id="l-email" placeholder="Admin Email"/>
       <input class="inp" type="password" id="l-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
     </div>
@@ -1147,7 +1147,7 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
         <div class="ltog" style="margin-top:-4px">প্রথমবার? PIN না থাকলে Admin reset করবে।</div>
       </div>
     </div>
-    <div id="lf-student" style="display:none">
+    <div id="lf-student">
       <div id="lfs-login">
         <input class="inp" type="tel" id="l-phone" placeholder="Phone Number (01XXXXXXXXX)"/>
         <div class="ltog">অ্যাকাউন্ট নেই? <a onclick="toggleReg(true)">Register করুন</a></div>
