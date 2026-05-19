@@ -363,6 +363,12 @@ async function adminAddFee(){
     if($('af-amount'))$('af-amount').value='';
     showToast(`✅ Fee added: ${name} — ${ftype} (${month})`);
     renderAdminFinance();
+        // Auto-remove due notification if Monthly Fee
+    if(ftype==='Monthly Fee' && window.autoRemoveDueOnPayment){
+      // Find studentId by name+class match
+      const stu=(window.appData.students||[]).find(s=>s.name===name&&(!cls||s.class===cls));
+      if(stu) window.autoRemoveDueOnPayment(stu.id||stu.phone, month, year);
+    }
   }catch(e){showToast('❌ Error: '+e.message);}
 }
 
@@ -397,5 +403,28 @@ function renderStuDue(){
     </div>`).join('');
 }
 
+// ── Auto-remove due notification when Monthly Fee is paid ──
+async function autoRemoveDueOnPayment(studentId, month, year){
+  try{
+    const dues = window.appData.dueNotifications || [];
+    // Match due entries for this student where month matches (e.g. "January 2025" or "January")
+    const monthStr = String(month);
+    const yearStr = String(year);
+    const matching = dues.filter(d => {
+      if(d.studentId !== studentId) return false;
+      // Support "January 2025", "January", or just month name
+      return d.month.includes(monthStr) && (d.month.includes(yearStr) || !d.month.match(/\d{4}/));
+    });
+    if(!matching.length) return;
+    const {doc, deleteDoc} = window._fb;
+    for(const d of matching){
+      await deleteDoc(doc(window._db, 'dueNotifications', d.id));
+    }
+    console.log(`[Due] Removed ${matching.length} due notification(s) for student ${studentId}`);
+  }catch(e){
+    console.warn('[Due] autoRemoveDueOnPayment error:', e.message);
+  }
+}
+window.autoRemoveDueOnPayment = autoRemoveDueOnPayment;
 // ── Expose ALL inline-onclick functions explicitly on window ──
 // Required so onclick="fnName()" works in all browsers/PWA contexts.
