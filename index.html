@@ -1304,6 +1304,13 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
         </div>
 
         <div style="height:24px;"></div>
+                <!-- Lesson Plans -->
+        <div class="drawer-group">
+          <div class="drawer-group-label">Teaching</div>
+          <button class="drawer-item" id="di-lesson-plans" onclick="aTab('lesson-plans',this)">
+            <span class="di-icon">📚</span><span class="di-label">Lesson Plans</span>
+          </button>
+        </div>
       </nav><!-- /admin-drawer -->
 
       <!-- ── Main content ── -->
@@ -1968,6 +1975,16 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
   </div>
       </div><!-- /admin-content -->
     </div><!-- /admin-layout -->
+      <!-- Lesson Plans Panel -->
+    <div class="apanel" id="ap-lesson-plans">
+      <div class="card" style="padding:18px;">
+        <div id="admin-lesson-plan-section">
+          <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
+            Click "Lesson Plans" in the menu to load…
+          </div>
+        </div>
+      </div>
+    </div>
   </div><!-- /abody -->
 <!-- MANAGER / CHAIRMAN SCREEN -->
 <div class="screen" id="s-manager">
@@ -2323,6 +2340,10 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
       font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;">
       🧠 Quiz</button>
+        <button class="t-dnav" id="tdnav-lessonplan" onclick="tTab('lessonplan',this)"
+      style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
+      font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;">
+      📋 Lesson Plan</button>
   </div>
 
   <div class="tbody2">
@@ -2347,7 +2368,12 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
     <div class="t-section-label">📋 Official Class Routine</div>
     <div id="t-routines"></div>
     </div><!-- end t-tab-classes -->
-
+    <!-- Lesson Plan Tab -->
+    <div id="t-tab-lessonplan" style="display:none">
+      <div style="padding:4px 0 8px;">
+        <div id="lesson-plan-section"></div>
+      </div>
+    </div>
     <!-- Notice Tab -->
     <div id="t-tab-notice" style="display:none">
       <div class="t-section-label" style="margin-top:4px">🔔 Notices for Teachers</div>
@@ -4136,6 +4162,7 @@ function aTab(name,el){
     renderHolidayList();
   }
   if(name==='finance') renderAdminFinance();
+  if(name==='lesson-plans') window.renderAdminLessonPlans && window.renderAdminLessonPlans('admin-lesson-plan-section');
   if(name==='dashboard') window.renderDashboard&&window.renderDashboard('dash-admin','admin');
   // Auto-close drawer on mobile
   if(window.innerWidth<=720) closeAdminDrawer();
@@ -5063,7 +5090,7 @@ function tTab(name, el){
   });
   el.style.background='var(--g)';
   el.style.color='#fff';
-  ['t-tab-classes','t-tab-notice','t-tab-routine','t-tab-attendance','t-tab-homework','t-tab-pin','t-tab-quiz'].forEach(id=>{
+  ['t-tab-classes','t-tab-notice','t-tab-routine','t-tab-attendance','t-tab-homework','t-tab-pin','t-tab-quiz','t-tab-lessonplan'].forEach(id=>{
     const el=$(id); if(el) el.style.display='none';
   });
   const tab=$(('t-tab-'+name));
@@ -5072,6 +5099,9 @@ function tTab(name, el){
   if(name==='routine') renderTeacherRoutinesTab();
   if(name==='attendance') renderTeacherAttendance();
   if(name==='homework'){ renderTeacherHomework(); }
+    if(name==='lessonplan' && window.renderLessonPlanSection && window.curTeacher){
+    window.renderLessonPlanSection(window.curTeacher);
+  }
 }
 
 function renderTeacherNotices(){
@@ -7826,6 +7856,8 @@ window._attQueuedWrite   = window._attQueuedWrite;
 </script>
 <script src="chairman-analytics.js"></script>
 <script src="today-class.js"></script>
+<script src="lesson-plan.js"></script>
+<script src="admin-lesson-plan.js"></script>
 <script src="quiz-fallback.js"></script>
 <script src="quiz-fixed.js"></script>
 </body>
