@@ -48,13 +48,13 @@
     text-transform:uppercase;
     letter-spacing:.6px;
     margin-top:4px;
-    opacity:.90;
+    opacity:.7;
   }
   .dash-kpi-sub{
     font-size:10px;
     font-weight:600;
     margin-top:3px;
-    opacity:.85;
+    opacity:.55;
   }
   .dash-kpi-glow{
     position:absolute;right:-18px;top:-18px;
@@ -456,14 +456,14 @@ window.renderDashboard = function(containerId, roleHint){
   const borderC  = isDark ? 'rgba(255,255,255,.1)' : '#e8eaed';
 
   /* KPI colours */
-  const kpiRevBg  = 'linear-gradient(135deg,#00513a,#00875a)';
-  const kpiExpBg  = 'linear-gradient(135deg,#5a1212,#8b1c1c)';
-  const kpiNetBg  = 'linear-gradient(135deg,#0a2a5e,#1a4a9e)';
-  const kpiAttBg  = 'linear-gradient(135deg,#3a1a6e,#5e2a9e)';
-  const kpiRevTxt = isDark ? '#90ffd6' : '#c8ffe8';
-  const kpiExpTxt = isDark ? '#ff9999' : '#ffbbbb';
-  const kpiNetTxt = isDark ? '#90caff' : '#c5e3ff';
-  const kpiAttTxt = isDark ? '#ce93d8' : '#e8c5ff';
+  const kpiRevBg  = isDark ? 'linear-gradient(135deg,#00513a,#00875a)' : 'linear-gradient(135deg,#e8f5e9,#c8e6c9)';
+  const kpiExpBg  = isDark ? 'linear-gradient(135deg,#5a1212,#8b1c1c)' : 'linear-gradient(135deg,#ffebee,#ffcdd2)';
+  const kpiNetBg  = isDark ? 'linear-gradient(135deg,#0a2a5e,#1a4a9e)' : 'linear-gradient(135deg,#e3f2fd,#bbdefb)';
+  const kpiAttBg  = isDark ? 'linear-gradient(135deg,#3a1a6e,#5e2a9e)' : 'linear-gradient(135deg,#f3e5f5,#e1bee7)';
+  const kpiRevTxt = isDark ? '#90ffd6' : '#1b5e20';
+  const kpiExpTxt = isDark ? '#ff9999' : '#b71c1c';
+  const kpiNetTxt = isDark ? '#90caff' : '#0d47a1';
+  const kpiAttTxt = isDark ? '#ce93d8' : '#6a1b9a';
 
   const netSign   = d.netBal >= 0 ? '' : '-';
   const netAmt    = '৳'+_DC.fmt(Math.abs(d.netBal));
@@ -514,10 +514,10 @@ window.renderDashboard = function(containerId, roleHint){
     </div>
 
     <div class="dash-kpi-grid">
-      ${_kpi('🎓', d.students.length, 'Students', (window.appData.pending||[]).length+' pending approval', 'linear-gradient(135deg,#1a3a5e,#1a5e9e)', '#b3d9ff', '#4499ff')}
-      ${_kpi('👨‍🏫', d.teachers.length, 'Teachers', tAttLabel+' teacher att. this month', 'linear-gradient(135deg,#3a2a0a,#7a5a0a)', '#ffe082', '#ffbb00')}
-      ${_kpi('⚠️', d.dueCount, 'Due Notices', 'Outstanding fee alerts', 'linear-gradient(135deg,#4a1a00,#8a3a00)', '#ffcc80', '#ff8800')}
-      ${_kpi('📝', d.hwDefaultersCount, 'HW Defaulters', 'Across all submissions', 'linear-gradient(135deg,#1a003a,#4a0080)', '#e8a0ff', '#cc44ff')}
+      ${_kpi('🎓', d.students.length, 'Students', (window.appData.pending||[]).length+' pending approval', 'linear-gradient(135deg,#1a3a5e,#1a5e9e)', isDark?'#90caff':'#0d47a1', '#4499ff')}
+      ${_kpi('👨‍🏫', d.teachers.length, 'Teachers', tAttLabel+' teacher att. this month', 'linear-gradient(135deg,#3a2a0a,#7a5a0a)', isDark?'#ffe082':'#e65100', '#ffbb00')}
+      ${_kpi('⚠️', d.dueCount, 'Due Notices', 'Outstanding fee alerts', 'linear-gradient(135deg,#4a1a00,#8a3a00)', isDark?'#ffcc80':'#e65100', '#ff8800')}
+      ${_kpi('📝', d.hwDefaultersCount, 'HW Defaulters', 'Across all submissions', 'linear-gradient(135deg,#1a003a,#4a0080)', isDark?'#ea80fc':'#7b1fa2', '#cc44ff')}
     </div>
 
     <!-- ── Finance Charts ── -->
@@ -621,6 +621,12 @@ window.renderDashboard = function(containerId, roleHint){
       <div id="dash-health-bars"></div>
     </div>
 
+    <!-- ── Lesson Plan Overview ── -->
+    <div class="dash-sec" style="color:${textPri};">📚 Lesson Plan Overview</div>
+    <div id="dash-lp-overview" class="dash-chart-wrap" style="padding-bottom:16px;">
+      <div style="text-align:center;opacity:.4;font-size:12px;padding:12px 0;">Loading lesson plans…</div>
+    </div>
+
     <div style="height:20px;"></div>
   </div>`;
 
@@ -714,6 +720,94 @@ window.renderDashboard = function(containerId, roleHint){
             : chunk
           ).join('')
         }`;
+    }
+    /* ── Lesson Plan Overview ── */
+    const lpEl = document.getElementById('dash-lp-overview');
+    if (lpEl) {
+      const plans = (window.appData && window.appData.lessonPlans) || [];
+      if (!plans.length) {
+        lpEl.innerHTML = `<div style="text-align:center;padding:18px;opacity:.4;font-size:13px;">No lesson plans recorded yet.</div>`;
+      } else {
+        const todayD = new Date().toISOString().split('T')[0];
+        const wr = (function(){
+          const now = new Date(), day = now.getDay();
+          const sat = new Date(now); sat.setDate(now.getDate() - ((day + 1) % 7));
+          const thu = new Date(sat); thu.setDate(sat.getDate() + 5);
+          return { from: sat.toISOString().split('T')[0], to: thu.toISOString().split('T')[0] };
+        })();
+        const thisWeek = plans.filter(p => p.date >= wr.from && p.date <= wr.to);
+        const todayPlans = plans.filter(p => p.date === todayD);
+        const subjects = [...new Set(plans.map(p => p.subject).filter(Boolean))];
+        const SCOLS = ['#00c896','#1a73e8','#ff9800','#e84040','#a855f7','#ec4899','#14b8a6','#f59e0b'];
+        const sColor = s => { let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return SCOLS[h%SCOLS.length]; };
+
+        /* Stat row */
+        let lpHtml = `
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px;">
+            ${[
+              ['📋', plans.length,      'Total Plans'],
+              ['📅', thisWeek.length,   'This Week'],
+              ['📖', todayPlans.length, 'Today'],
+              ['📚', subjects.length,   'Subjects'],
+            ].map(([ic,v,lb])=>`
+              <div style="flex:1;min-width:72px;background:${isDark?'rgba(255,255,255,.06)':'#f0f4f8'};
+                border-radius:12px;padding:10px 8px;text-align:center;border:1px solid ${isDark?'rgba(255,255,255,.1)':'#e0e4ea'};">
+                <div style="font-size:18px;">${ic}</div>
+                <div style="font-family:'Baloo 2',sans-serif;font-size:18px;font-weight:900;color:${textPri};">${v}</div>
+                <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:${textMut};">${lb}</div>
+              </div>`).join('')}
+          </div>`;
+
+        /* Today's plans */
+        if (todayPlans.length) {
+          lpHtml += `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:${textMut};margin-bottom:8px;">📅 Today's Sessions</div>`;
+          todayPlans.slice(0,4).forEach(p => {
+            const c = sColor(p.subject||'');
+            lpHtml += `
+              <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;
+                border-radius:10px;margin-bottom:6px;
+                background:${isDark?'rgba(255,255,255,.04)':'#f8f9fa'};
+                border-left:3px solid ${c};border:1px solid ${isDark?'rgba(255,255,255,.06)':'#e8eaed'};border-left:3px solid ${c};">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:12px;font-weight:700;color:${c};">${p.subject||'—'}</div>
+                  <div style="font-size:13px;font-weight:700;color:${textPri};margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.topic||'—'}</div>
+                  <div style="font-size:11px;color:${textMut};margin-top:1px;">${p.class||''}${p.teacher?' · '+p.teacher:''}</div>
+                </div>
+                ${p.time?`<div style="font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:800;color:${textMut};white-space:nowrap;">${(h=>{ const [hr,mi]=h.split(':').map(Number);const ap=hr>=12?'PM':'AM';return (hr%12||12)+':'+(String(mi).padStart(2,'0'))+' '+ap; })(p.time)}</div>`:''}
+              </div>`;
+          });
+          if(todayPlans.length>4) lpHtml += `<div style="font-size:11px;color:${textMut};text-align:center;margin-top:4px;">+${todayPlans.length-4} more today</div>`;
+        }
+
+        /* Subject coverage bars */
+        lpHtml += `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:${textMut};margin:14px 0 8px;">📊 Plans by Subject (All Time)</div>`;
+        const subjectCounts = {};
+        plans.forEach(p => { const s=p.subject||'Other'; subjectCounts[s]=(subjectCounts[s]||0)+1; });
+        const subjectSorted = Object.entries(subjectCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+        const maxSC = subjectSorted[0]?.[1] || 1;
+        subjectSorted.forEach(([s,v]) => {
+          const c = sColor(s);
+          const pct = Math.max((v/maxSC)*100, 2);
+          lpHtml += `<div class="dash-hbar-row">
+            <div class="dash-hbar-label" style="color:${textPri};" title="${s}">${s}</div>
+            <div class="dash-hbar-track"><div class="dash-hbar-fill" style="width:${pct}%;background:${c};"></div></div>
+            <div class="dash-hbar-val" style="color:${c};">${v}</div>
+          </div>`;
+        });
+
+        /* Quick link */
+        lpHtml += `
+          <div style="margin-top:14px;text-align:center;">
+            <button onclick="aTab&&aTab('lesson-plans',document.getElementById('di-lesson-plans'))"
+              style="background:linear-gradient(135deg,#00c896,#1a73e8);color:#fff;border:none;
+              border-radius:10px;padding:9px 20px;font-family:'Baloo 2',sans-serif;
+              font-size:12px;font-weight:800;cursor:pointer;">
+              📚 View Full Lesson Plans →
+            </button>
+          </div>`;
+
+        lpEl.innerHTML = lpHtml;
+      }
     }
   });
 };
