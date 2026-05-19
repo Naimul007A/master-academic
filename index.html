@@ -204,6 +204,75 @@ window._setupListeners = ()=>{
       });
     });
   };
+  // ── Monthly Due Notification Scheduler ──────────────────────────────────────
+// Runs once on load; fires every 25th at midnight to notify all students with
+// active due notifications. Repeats daily until paid (due removed auto on pay).
+(function _scheduleDueNotifLoop(){
+  function _msUntilNext25(){
+    const now = new Date();
+    let target = new Date(now.getFullYear(), now.getMonth(), 25, 0, 0, 0, 0);
+    if(now >= target) target = new Date(now.getFullYear(), now.getMonth()+1, 25, 0, 0, 0, 0);
+    return target - now;
+  }
+
+  async function _sendDueReminders(){
+    const dues = window.appData.dueNotifications || [];
+    if(!dues.length) return;
+    const students = window.appData.students || [];
+    for(const d of dues){
+      const stu = students.find(s=>s.id===d.studentId);
+      if(!stu) continue;
+      // Push notification to that student
+      if(window.sendPush){
+        try{
+          await window.sendPush(
+            '⚠️ Fee Due Reminder — Master Academic',
+            `${stu.name}, আপনার ${d.month} এর মাসিক ফি এখনো বাকি আছে। অফিসে গিয়ে পেমেন্ট করুন।`,
+            'notice',
+            stu.class,
+            '/'
+          );
+        }catch(e){ console.warn('[DueReminder] push error:', e.message); }
+      }
+    }
+    console.log(`[DueReminder] Sent reminders for ${dues.length} due notification(s).`);
+    // Schedule next check after 24h (will keep firing daily until dues cleared)
+    setTimeout(_sendDueReminders, 24*60*60*1000);
+  }
+
+  // First fire: wait until next 25th, then fire daily
+  const msToFirst = _msUntilNext25();
+  console.log(`[DueReminder] Next reminder in ${Math.round(msToFirst/3600000)}h`);
+  setTimeout(()=>{
+    _sendDueReminders();
+  }, msToFirst);
+})();
+  async function _sendDueReminders(){
+  if(!window.appData.dueNotifications || !window.appData.students){
+    setTimeout(_sendDueReminders, 5000);
+    return;
+  }
+  const dues = window.appData.dueNotifications || [];
+  if(!dues.length) return;
+  const students = window.appData.students || [];
+  for(const d of dues){
+    const stu = students.find(s=>s.id===d.studentId);
+    if(!stu) continue;
+    if(window.sendPush){
+      try{
+        await window.sendPush(
+          '⚠️ Fee Due Reminder — Master Academic',
+          `${stu.name}, আপনার ${d.month} এর মাসিক ফি এখনো বাকি আছে। অফিসে গিয়ে পেমেন্ট করুন।`,
+          'notice',
+          stu.class,
+          '/'
+        );
+      }catch(e){ console.warn('[DueReminder] push error:', e.message); }
+    }
+  }
+  console.log(`[DueReminder] Sent reminders for ${dues.length} due notification(s).`);
+  setTimeout(_sendDueReminders, 24*60*60*1000);
+}
 
   // Core data collections
   snap('teachers','teachers');
@@ -3307,6 +3376,9 @@ async function mgrMarkStudentPaid(studentPhone){
     window.appData.fees.push({id:docRef.id,...newFee});
     showToast(`✅ ${stu.name} — Paid (${month}) recorded!`);
     renderMgrStudents();
+    if(window.autoRemoveDueOnPayment){
+      window.autoRemoveDueOnPayment(stu.id||stu.phone, month, year);
+    }
   }catch(e){
     console.error('mgrMarkStudentPaid error:',e);
     showToast('❌ Error: '+e.message);
@@ -3561,6 +3633,10 @@ async function mgrRecordFee(){
     showToast(`✅ Fee recorded: ${studentName} — ${feeType} (${month})`);
     renderMgrFinance();
     renderMgrStudents();
+    // Auto-remove due notification if Monthly Fee
+    if(feeType==='Monthly Fee' && window.autoRemoveDueOnPayment){
+      window.autoRemoveDueOnPayment(studentId, month, year);
+    }
   }catch(e){
     console.error('mgrRecordFee error:',e);
     showToast('❌ Error: '+e.message);
