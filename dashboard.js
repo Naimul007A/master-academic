@@ -142,6 +142,31 @@
   .apanel .dash-hbar-track{background:rgba(0,0,0,.07);}
   .apanel .dash-list-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
   .apanel .dash-sec::after{opacity:.1;}
+  /* ── DESKTOP GRID FIX ───────────────────────────── */
+.dash-main-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:12px;
+  align-items:start;
+  margin-bottom:12px;
+}
+
+.dash-main-grid > *{
+  min-width:0;
+}
+
+.lesson-plan-overview{
+  width:100%;
+  margin:0 !important;
+  align-self:start;
+  grid-column:auto !important;
+}
+
+@media(max-width:768px){
+  .dash-main-grid{
+    grid-template-columns:1fr;
+  }
+}
   `;
   document.head.appendChild(s);
 })();
@@ -825,3 +850,77 @@ window._refreshDashboard = function(){
     window.renderDashboard('dash-mgr', 'manager');
   }
 };
+// ── AUTO FIX LESSON PLAN POSITION ───────────────────────────────────────────
+(function(){
+
+  function fixLessonPlanLayout(){
+
+    const dashRoots = document.querySelectorAll(
+      '#dash-admin, #dash-mgr'
+    );
+
+    dashRoots.forEach(root=>{
+
+      // Find lesson plan card
+      const lessonCard = [...root.querySelectorAll('div,section,article')]
+        .find(el =>
+          (el.textContent || '')
+            .includes('Lesson Plan Overview')
+        );
+
+      if(!lessonCard) return;
+
+      // Create dashboard grid if not exists
+      let grid = root.querySelector('.dash-main-grid');
+
+      if(!grid){
+
+        grid = document.createElement('div');
+        grid.className = 'dash-main-grid';
+
+        const children = [...root.children];
+
+        children.forEach(ch=>{
+          if(ch !== grid){
+            grid.appendChild(ch);
+          }
+        });
+
+        root.appendChild(grid);
+      }
+
+      // Apply class
+      lessonCard.classList.add('lesson-plan-overview');
+
+      // Move lesson card to top grid
+      grid.prepend(lessonCard);
+
+    });
+
+  }
+
+  // Hook dashboard render
+  const oldRender = window.renderDashboard;
+
+  if(oldRender){
+
+    window.renderDashboard = function(...args){
+
+      const result = oldRender.apply(this,args);
+
+      setTimeout(fixLessonPlanLayout,50);
+      setTimeout(fixLessonPlanLayout,300);
+      setTimeout(fixLessonPlanLayout,700);
+
+      return result;
+    };
+  }
+
+  // Initial load
+  window.addEventListener('load',()=>{
+
+    setTimeout(fixLessonPlanLayout,1000);
+
+  });
+
+})();
