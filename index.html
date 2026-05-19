@@ -721,7 +721,7 @@ textarea{resize:vertical;min-height:75px;}
 .mgr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,.08);}
 .mgr-row:last-child{border-bottom:none;}
-.mgr-label{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.mgr-label{font-size:11px;color:rgba(255,255,255,.72);margin-top:2px;}
 .role-tag{display:inline-block;padding:2px 9px;border-radius:14px;font-size:11px;font-weight:700;}
 .role-tag.teacher{background:rgba(0,200,150,.15);color:var(--g);}
 .role-tag.manager{background:rgba(255,179,0,.15);color:var(--y);}
@@ -763,7 +763,7 @@ textarea{resize:vertical;min-height:75px;}
 .trout-info{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
 .trout-title{font-family:'Baloo 2',sans-serif;font-size:13px;font-weight:700;color:#fff;}
 .trout-date{font-size:11px;color:rgba(255,255,255,.45);}
-.t-section-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);
+.t-section-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.75);
   text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;}
 
 /* STUDENT */
@@ -2029,6 +2029,10 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
       font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;display:none;">
       💰 Finance</button>
+    <button class="mgr-nav" id="mgr-nav-lessonplan" onclick="mgrTab('lessonplan',this)"
+      style="flex-shrink:0;padding:8px 14px;border:none;border-radius:10px;font-family:'Baloo 2',sans-serif;
+      font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);transition:all .2s;">
+      📚 Lesson Plans</button>
   </div>
   <div class="tbody2">
       <div class="twel" id="mgr-name" style="margin-bottom:18px;">Welcome!</div>
@@ -2299,6 +2303,11 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
         <div style="text-align:center;padding:18px;color:rgba(255,255,255,.3);font-size:13px;">No scans yet. Start the camera to scan QR codes.</div>
       </div>
     </div>
+    <!-- Lesson Plans Tab (Chairman / Manager view) -->
+    <div id="mgr-tab-lessonplan" style="display:none">
+      <div class="t-section-label">📚 Lesson Plans</div>
+      <div id="mgr-lesson-plan-section"></div>
+    </div>
   </div>
 </div>
 
@@ -2306,7 +2315,7 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
   <div class="topbar">
     <div class="brand">🏫 <span>Master</span> Academic</div>
     <div style="display:flex;align-items:center;gap:9px">
-      <span id="tchClk" style="font-size:11px;color:rgba(255,255,255,.4)"></span>
+      <span id="tchClk" style="font-size:11px;color:rgba(255,255,255,.72)"></span>
       <button class="bti" onclick="doLogout()">Logout</button>
     </div>
   </div>
@@ -3229,7 +3238,7 @@ function mgrTab(name, el){
   });
   if(el){el.style.background='linear-gradient(135deg,#00c896,#1a73e8)';el.style.color='#fff';}
   // ADD 'mgr-tab-analytics' to the list
-  ['mgr-tab-analytics','mgr-tab-teachers','mgr-tab-students','mgr-tab-attendance','mgr-tab-teacher-att','mgr-tab-homework','mgr-tab-finance','mgr-tab-scanner'].forEach(id=>{
+  ['mgr-tab-analytics','mgr-tab-teachers','mgr-tab-students','mgr-tab-attendance','mgr-tab-teacher-att','mgr-tab-homework','mgr-tab-finance','mgr-tab-scanner','mgr-tab-lessonplan'].forEach(id=>{
     const t=$(id);if(t)t.style.display='none';
   });
   const tab=$('mgr-tab-'+name);if(tab)tab.style.display='block';
@@ -3245,6 +3254,10 @@ function mgrTab(name, el){
   else if(name==='analytics'){ 
     if(window.renderChairmanAnalytics) window.renderChairmanAnalytics();
     else console.warn('chairman-analytics.js not loaded yet');
+  }
+  else if(name==='lessonplan'){
+    if(window.renderAdminLessonPlans) window.renderAdminLessonPlans('mgr-lesson-plan-section');
+    else console.warn('admin-lesson-plan.js not loaded yet');
   }
 }
 
