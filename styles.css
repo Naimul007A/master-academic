@@ -138,8 +138,8 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
   border:1px solid rgba(255,255,255,0.12);
   border-radius:13px;
   background:rgba(0,0,0,0.25);
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
+  color:black !important;
+  -webkit-text-fill-color:black !important;
   font-family:'Hind Siliguri',sans-serif;font-size:14px;
   outline:none;margin-bottom:11px;
   transition:all .2s;
@@ -151,17 +151,17 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
   border-color:rgba(0,229,160,0.5);
   background:rgba(0,229,160,0.08);
   box-shadow:0 0 0 3px rgba(0,229,160,0.15),0 2px 8px rgba(0,0,0,0.3);
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
+  color:black !important;
+  -webkit-text-fill-color:black !important;
 }
 /* Prevent browser autofill from overriding text color */
 .inp:-webkit-autofill,
 .inp:-webkit-autofill:focus{
   -webkit-box-shadow:0 0 0 1000px rgba(0,20,10,0.95) inset,0 0 0 3px rgba(0,229,160,0.15);
-  -webkit-text-fill-color:#fff !important;
+  -webkit-text-fill-color:black  !important;
   caret-color:#00e5a0;
 }
-.inp option{background:#0f172a;color:#fff;}
+.inp option{background:#0f172a;color:#000;}
 
 /* 3D Glossy Primary Button */
 .btnp{
@@ -346,7 +346,8 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;}
 
 /* Form Controls */
-input[type=text],input[type=time],input[type=file],input[type=tel],select,textarea{
+input[type=text],input[type=time],input[type=file],input[type=tel],input[type=email],
+input[type=password],input[type=number],input[type=date],select,textarea{
   width:100%;padding:11px 14px;
   border:1.5px solid #e2e8f0;
   border-radius:11px;
@@ -370,7 +371,7 @@ textarea{resize:vertical;min-height:75px;}
 #s-manager select,#s-manager textarea{
   background:rgba(255,255,255,0.07);
   border-color:rgba(255,255,255,0.14);
-  color:#fff;
+  color:black !important;
   box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 0 rgba(255,255,255,0.07) inset;
 }
 #s-teacher input::placeholder,#s-teacher textarea::placeholder,#s-teacher select option,
@@ -386,6 +387,36 @@ textarea{resize:vertical;min-height:75px;}
   background:rgba(0,229,160,0.07);
   box-shadow:0 0 0 3px rgba(0,229,160,0.15),0 2px 8px rgba(0,0,0,0.3);
   color:#fff;
+}
+
+/* Forms inside light cards must stay readable, even on dark screens */
+.card input:not([type=checkbox]):not([type=radio]),
+.card select,
+.card textarea{
+  background:#fff !important;
+  color:var(--text) !important;
+  -webkit-text-fill-color:var(--text) !important;
+  border-color:var(--border) !important;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.8) inset !important;
+}
+.card input:not([type=checkbox]):not([type=radio]):focus,
+.card select:focus,
+.card textarea:focus{
+  background:#fff !important;
+  color:var(--text) !important;
+  -webkit-text-fill-color:var(--text) !important;
+  border-color:#4f8ef7 !important;
+  box-shadow:0 0 0 3px rgba(79,142,247,0.14),0 2px 6px rgba(0,0,0,0.04) !important;
+}
+.card input::placeholder,
+.card textarea::placeholder{
+  color:var(--muted) !important;
+  -webkit-text-fill-color:var(--muted) !important;
+  opacity:0.75;
+}
+.card select option{
+  background:#fff !important;
+  color:var(--text) !important;
 }
 
 /* Quiz builder inputs (also on dark background) */
