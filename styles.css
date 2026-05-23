@@ -137,9 +137,9 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
   width:100%;padding:13px 16px;
   border:1px solid rgba(255,255,255,0.12);
   border-radius:13px;
-  background:rgba(0,0,0,0.25);
-  color:black !important;
-  -webkit-text-fill-color:black !important;
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
   font-family:'Hind Siliguri',sans-serif;font-size:14px;
   outline:none;margin-bottom:11px;
   transition:all .2s;
@@ -149,19 +149,19 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .inp::placeholder{color:rgba(255,255,255,0.3) !important;-webkit-text-fill-color:rgba(255,255,255,0.3) !important;}
 .inp:focus{
   border-color:rgba(0,229,160,0.5);
-  background:rgba(0,229,160,0.08);
+  background:#1e293b !important;
   box-shadow:0 0 0 3px rgba(0,229,160,0.15),0 2px 8px rgba(0,0,0,0.3);
-  color:black !important;
-  -webkit-text-fill-color:black !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
 }
 /* Prevent browser autofill from overriding text color */
 .inp:-webkit-autofill,
 .inp:-webkit-autofill:focus{
   -webkit-box-shadow:0 0 0 1000px rgba(0,20,10,0.95) inset,0 0 0 3px rgba(0,229,160,0.15);
-  -webkit-text-fill-color:black  !important;
+  -webkit-text-fill-color:#fff !important;
   caret-color:#00e5a0;
 }
-.inp option{background:#0f172a;color:#000;}
+.inp option{background:#1e293b;color:#fff;}
 
 /* 3D Glossy Primary Button */
 .btnp{
@@ -355,18 +355,38 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 input[type=text],input[type=time],input[type=file],input[type=tel],input[type=email],
 input[type=password],input[type=number],input[type=date],select,textarea{
   width:100%;padding:11px 14px;
-  border:1.5px solid #e2e8f0;
+  border:1.5px solid rgba(255,255,255,0.16);
   border-radius:11px;
   font-family:'Hind Siliguri',sans-serif;font-size:13px;
-  color:var(--text);outline:none;transition:all .2s;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.8) inset;
+  color:#fff;outline:none;transition:all .2s;
+  -webkit-text-fill-color:#fff;
+  background:#1e293b;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 0 rgba(255,255,255,0.07) inset;
 }
 input:focus,select:focus,textarea:focus{
   border-color:#4f8ef7;
-  box-shadow:0 0 0 3px rgba(79,142,247,0.12),0 2px 6px rgba(0,0,0,0.04);
+  background:#1e293b;
+  color:#fff;
+  -webkit-text-fill-color:#fff;
+  box-shadow:0 0 0 3px rgba(79,142,247,0.16),0 2px 8px rgba(0,0,0,0.28);
 }
 textarea{resize:vertical;min-height:75px;}
+
+input::placeholder,
+textarea::placeholder{
+  color:rgba(255,255,255,0.48) !important;
+  -webkit-text-fill-color:rgba(255,255,255,0.48) !important;
+  opacity:1;
+}
+select option{
+  background:#1e293b !important;
+  color:#fff !important;
+}
+input[type=date]::-webkit-calendar-picker-indicator,
+input[type=time]::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  opacity:.85;
+}
 
 /* Dark-screen inputs (teacher / admin / manager panels) */
 #s-teacher input[type=text],#s-teacher input[type=time],#s-teacher input[type=tel],
@@ -377,7 +397,8 @@ textarea{resize:vertical;min-height:75px;}
 #s-manager select,#s-manager textarea{
   background:rgba(255,255,255,0.07);
   border-color:rgba(255,255,255,0.14);
-  color:black !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
   box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 0 rgba(255,255,255,0.07) inset;
 }
 #s-teacher input::placeholder,#s-teacher textarea::placeholder,#s-teacher select option,
@@ -395,34 +416,28 @@ textarea{resize:vertical;min-height:75px;}
   color:#fff;
 }
 
-/* Forms inside light cards must stay readable, even on dark screens */
+/* Force dark fields even when inline styles try to make them light */
+input:not([type=checkbox]):not([type=radio]),
+select,
+textarea,
 .card input:not([type=checkbox]):not([type=radio]),
 .card select,
 .card textarea{
-  background:#fff !important;
-  color:#1e293b !important;
-  -webkit-text-fill-color:#1e293b !important;
-  border-color:#e2e8f0 !important;
-  box-shadow:0 2px 6px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.8) inset !important;
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,0.16) !important;
 }
+input:not([type=checkbox]):not([type=radio]):focus,
+select:focus,
+textarea:focus,
 .card input:not([type=checkbox]):not([type=radio]):focus,
 .card select:focus,
 .card textarea:focus{
-  background:#fff !important;
-  color:#1e293b !important;
-  -webkit-text-fill-color:#1e293b !important;
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
   border-color:#4f8ef7 !important;
-  box-shadow:0 0 0 3px rgba(79,142,247,0.14),0 2px 6px rgba(0,0,0,0.04) !important;
-}
-.card input::placeholder,
-.card textarea::placeholder{
-  color:#64748b !important;
-  -webkit-text-fill-color:#64748b !important;
-  opacity:0.75;
-}
-.card select option{
-  background:#fff !important;
-  color:#1e293b !important;
 }
 
 /* Dark nested content inside cards: tables, lists, sheet cards, and generated rows */

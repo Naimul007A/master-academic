@@ -688,35 +688,50 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;}
 input[type=text],input[type=time],input[type=file],input[type=tel],input[type=email],
 input[type=password],input[type=number],input[type=date],select,textarea{
-  width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;
-  font-family:'Hind Siliguri',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border .2s;background:#fff;}
-input:focus,select:focus,textarea:focus{border-color:var(--g);}
+  width:100%;padding:10px 13px;border:1.5px solid rgba(255,255,255,.16);border-radius:10px;
+  font-family:'Hind Siliguri',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .2s;background:#1e293b;-webkit-text-fill-color:#fff;}
+input:focus,select:focus,textarea:focus{border-color:var(--g);background:#1e293b;color:#fff;-webkit-text-fill-color:#fff;}
 textarea{resize:vertical;min-height:75px;}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.48)!important;-webkit-text-fill-color:rgba(255,255,255,.48)!important;opacity:1;}
+select option{background:#1e293b!important;color:#fff!important;}
+input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.85;}
+input:not([type=checkbox]):not([type=radio]),select,textarea{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+input:not([type=checkbox]):not([type=radio]):focus,select:focus,textarea:focus{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:var(--g) !important;
+}
 .card input:not([type=checkbox]):not([type=radio]),
 .card select,
 .card textarea{
-  background:#fff !important;
-  color:#1e293b !important;
-  -webkit-text-fill-color:#1e293b !important;
-  border-color:#e2e8f0 !important;
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
 }
 .card input:not([type=checkbox]):not([type=radio]):focus,
 .card select:focus,
 .card textarea:focus{
-  background:#fff !important;
-  color:#1e293b !important;
-  -webkit-text-fill-color:#1e293b !important;
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
   border-color:var(--g) !important;
 }
 .card input::placeholder,
 .card textarea::placeholder{
-  color:#64748b !important;
-  -webkit-text-fill-color:#64748b !important;
-  opacity:.75;
+  color:rgba(255,255,255,.48) !important;
+  -webkit-text-fill-color:rgba(255,255,255,.48) !important;
+  opacity:1;
 }
 .card select option{
-  background:#fff !important;
-  color:#1e293b !important;
+  background:#1e293b !important;
+  color:#fff !important;
 }
 .card .li,
 .card .ncard,
