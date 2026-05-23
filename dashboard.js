@@ -136,12 +136,12 @@
     font-size:13px;
   }
 
-  /* Dark-mode aware overrides for admin light panel */
-  .apanel .dash-kpi{border:1px solid rgba(0,0,0,.07);}
-  .apanel .dash-chart-wrap{background:#f9fafb;border:1px solid #e8eaed;}
-  .apanel .dash-hbar-track{background:rgba(0,0,0,.07);}
-  .apanel .dash-list-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
-  .apanel .dash-sec::after{opacity:.1;}
+  /* Dashboard cards follow the dark app card theme */
+  .apanel .dash-kpi{background:#1e293b!important;color:#fff!important;border:1px solid rgba(255,255,255,.1);}
+  .apanel .dash-chart-wrap{background:#1e293b;border:1px solid rgba(255,255,255,.16);color:#fff;}
+  .apanel .dash-hbar-track{background:rgba(255,255,255,.1);}
+  .apanel .dash-list-item{background:#1e293b;border-color:rgba(255,255,255,.16);color:#fff;}
+  .apanel .dash-sec::after{opacity:.12;}
   /* ── DESKTOP GRID FIX ───────────────────────────── */
 .dash-main-grid{
   display:grid;
@@ -473,8 +473,8 @@ window.renderDashboard = function(containerId, roleHint){
   if(!el) return;
   const d = _dashCompute();
 
-  /* colour scheme adapts to dark (manager/chairman) vs light (admin) */
-  const isDark = roleHint === 'manager';
+  /* Dashboard uses the same dark card theme across admin/manager/chairman. */
+  const isDark = true;
   const textPri  = isDark ? '#ffffff' : '#ffffff';
   const textMut  = isDark ? 'rgba(255,255,255,.5)' : '#5f6368';
   const cardBg   = isDark ? 'rgba(255,255,255,.06)' : '#f8f9fa';
