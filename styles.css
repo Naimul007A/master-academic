@@ -15,7 +15,7 @@
   /* Backgrounds */
   --bg:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f2318 100%);
   --bg-flat:#0f172a;
-  --card:#ffffff;
+  --card:#1e293b;
   --card-glass:rgba(255,255,255,0.06);
 
   /* Text */
@@ -327,18 +327,24 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 
 /* Cards */
 .card{
-  background:#fff;
+  background:#1e293b;
+  color:#fff;
+  --text:#fff;
+  --dark:#fff;
+  --muted:rgba(255,255,255,0.72);
+  --border:rgba(255,255,255,0.16);
+  --card:#1e293b;
   border-radius:18px;padding:22px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.07),0 1px 0 rgba(255,255,255,0.8) inset;
+  box-shadow:0 4px 24px rgba(0,0,0,0.18),0 1px 0 rgba(255,255,255,0.08) inset;
   margin-bottom:16px;
-  border:1px solid rgba(255,255,255,0.9);
+  border:1px solid rgba(255,255,255,0.1);
   position:relative;overflow:hidden;
 }
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
 }
-.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:var(--dark);}
+.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:#fff;}
 
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:600px){.fg{grid-template-columns:1fr;}}
@@ -394,29 +400,90 @@ textarea{resize:vertical;min-height:75px;}
 .card select,
 .card textarea{
   background:#fff !important;
-  color:var(--text) !important;
-  -webkit-text-fill-color:var(--text) !important;
-  border-color:var(--border) !important;
+  color:#1e293b !important;
+  -webkit-text-fill-color:#1e293b !important;
+  border-color:#e2e8f0 !important;
   box-shadow:0 2px 6px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.8) inset !important;
 }
 .card input:not([type=checkbox]):not([type=radio]):focus,
 .card select:focus,
 .card textarea:focus{
   background:#fff !important;
-  color:var(--text) !important;
-  -webkit-text-fill-color:var(--text) !important;
+  color:#1e293b !important;
+  -webkit-text-fill-color:#1e293b !important;
   border-color:#4f8ef7 !important;
   box-shadow:0 0 0 3px rgba(79,142,247,0.14),0 2px 6px rgba(0,0,0,0.04) !important;
 }
 .card input::placeholder,
 .card textarea::placeholder{
-  color:var(--muted) !important;
-  -webkit-text-fill-color:var(--muted) !important;
+  color:#64748b !important;
+  -webkit-text-fill-color:#64748b !important;
   opacity:0.75;
 }
 .card select option{
   background:#fff !important;
-  color:var(--text) !important;
+  color:#1e293b !important;
+}
+
+/* Dark nested content inside cards: tables, lists, sheet cards, and generated rows */
+.card .li,
+.card .ncard,
+.card .rcard,
+.card .mbody,
+.card .witem,
+.card .shcard,
+.card .att-week-card,
+.card .hw-card,
+.card .exam-card,
+.card .quiz-q-card,
+.card .marks-table,
+.card table,
+.card thead,
+.card tbody,
+.card tr,
+.card th,
+.card td{
+  background:#1e293b !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,0.16) !important;
+}
+.card .li-title,
+.card .li-sub,
+.card .nt,
+.card .nb,
+.card .nd,
+.card .rcclass,
+.card .rcdate,
+.card .wtitle,
+.card .wsub,
+.card .sht,
+.card .shs,
+.card .hw-body,
+.card .exam-subj,
+.card .exam-info,
+.card .leader-name,
+.card .leader-pos,
+.card .marks-table td,
+.card .marks-table th{
+  color:#fff !important;
+}
+.card .li:hover,
+.card .witem:hover,
+.card .tbl tr:hover td,
+.card .shcard:hover,
+.card .ncard:hover,
+.card .rcard:hover{
+  background:#273449 !important;
+}
+.card .sfb{
+  background:#273449 !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,0.18) !important;
+}
+.card .sfb.active{
+  background:linear-gradient(135deg,#00e5a0,#4f8ef7) !important;
+  color:#fff !important;
+  border-color:transparent !important;
 }
 
 /* Quiz builder inputs (also on dark background) */

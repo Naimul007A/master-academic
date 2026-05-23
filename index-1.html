@@ -569,7 +569,7 @@ window.addEventListener('beforeunload',()=>{
 
 <style>
 :root{--g:#00c896;--gd:#009e76;--b:#1a73e8;--r:#e84040;--y:#ffb300;
-  --bg:#f0f4f8;--card:#fff;--text:#1a2340;--muted:#7a8499;--border:#dde3ed;--dark:#1a2340;}
+  --bg:#f0f4f8;--card:#1e293b;--text:#1a2340;--muted:#7a8499;--border:#dde3ed;--dark:#1a2340;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
@@ -680,8 +680,8 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 /* legacy atabs — hidden now */
 .atabs{display:none;}
 .atab{}
-.card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px;}
-.card h3{font-size:15px;font-weight:800;margin-bottom:14px;}
+.card{background:#1e293b;color:#fff;--text:#fff;--dark:#fff;--muted:rgba(255,255,255,.72);--border:rgba(255,255,255,.16);--card:#1e293b;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.18);margin-bottom:16px;border:1px solid rgba(255,255,255,.1);}
+.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:#fff;}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:600px){.fg{grid-template-columns:1fr;}}
 .fg .full{grid-column:1/-1;}
@@ -696,27 +696,86 @@ textarea{resize:vertical;min-height:75px;}
 .card select,
 .card textarea{
   background:#fff !important;
-  color:var(--text) !important;
-  -webkit-text-fill-color:var(--text) !important;
-  border-color:var(--border) !important;
+  color:#1e293b !important;
+  -webkit-text-fill-color:#1e293b !important;
+  border-color:#e2e8f0 !important;
 }
 .card input:not([type=checkbox]):not([type=radio]):focus,
 .card select:focus,
 .card textarea:focus{
   background:#fff !important;
-  color:var(--text) !important;
-  -webkit-text-fill-color:var(--text) !important;
+  color:#1e293b !important;
+  -webkit-text-fill-color:#1e293b !important;
   border-color:var(--g) !important;
 }
 .card input::placeholder,
 .card textarea::placeholder{
-  color:var(--muted) !important;
-  -webkit-text-fill-color:var(--muted) !important;
+  color:#64748b !important;
+  -webkit-text-fill-color:#64748b !important;
   opacity:.75;
 }
 .card select option{
   background:#fff !important;
-  color:var(--text) !important;
+  color:#1e293b !important;
+}
+.card .li,
+.card .ncard,
+.card .rcard,
+.card .mbody,
+.card .witem,
+.card .shcard,
+.card .att-week-card,
+.card .hw-card,
+.card .exam-card,
+.card .quiz-q-card,
+.card .marks-table,
+.card table,
+.card thead,
+.card tbody,
+.card tr,
+.card th,
+.card td{
+  background:#1e293b !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+.card .li-title,
+.card .li-sub,
+.card .nt,
+.card .nb,
+.card .nd,
+.card .rcclass,
+.card .rcdate,
+.card .wtitle,
+.card .wsub,
+.card .sht,
+.card .shs,
+.card .hw-body,
+.card .exam-subj,
+.card .exam-info,
+.card .leader-name,
+.card .leader-pos,
+.card .marks-table td,
+.card .marks-table th{
+  color:#fff !important;
+}
+.card .li:hover,
+.card .witem:hover,
+.card .tbl tr:hover td,
+.card .shcard:hover,
+.card .ncard:hover,
+.card .rcard:hover{
+  background:#273449 !important;
+}
+.card .sfb{
+  background:#273449 !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.18) !important;
+}
+.card .sfb.active{
+  background:linear-gradient(135deg,#00e5a0,#4f8ef7) !important;
+  color:#fff !important;
+  border-color:transparent !important;
 }
 .badd{width:100%;padding:11px;border:none;border-radius:10px;
   background:linear-gradient(135deg,var(--g),var(--b));color:#fff;

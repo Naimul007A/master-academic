@@ -475,7 +475,7 @@ window.renderDashboard = function(containerId, roleHint){
 
   /* colour scheme adapts to dark (manager/chairman) vs light (admin) */
   const isDark = roleHint === 'manager';
-  const textPri  = isDark ? '#ffffff' : '#1a1a2e';
+  const textPri  = isDark ? '#ffffff' : '#ffffff';
   const textMut  = isDark ? 'rgba(255,255,255,.5)' : '#5f6368';
   const cardBg   = isDark ? 'rgba(255,255,255,.06)' : '#f8f9fa';
   const borderC  = isDark ? 'rgba(255,255,255,.1)' : '#e8eaed';
@@ -499,7 +499,7 @@ window.renderDashboard = function(containerId, roleHint){
 
     <!-- ── Today Strip ── -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:900;color:${textPri};">
+      <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:900;">
         📊 Analytics Dashboard
       </div>
       <div style="font-size:11px;color:${textMut};font-weight:600;">
