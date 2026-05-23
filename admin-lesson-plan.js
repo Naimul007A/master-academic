@@ -125,12 +125,8 @@
   const CARD_BG = 'rgba(255,255,255,0.05)';
   const SUBJECT_COLORS = ['#00c896','#1a73e8','#ff9800','#e84040','#a855f7','#ec4899','#14b8a6','#f59e0b'];
 
-  /* Detect panel theme: admin uses light bg, manager/chairman use dark */
+  /* Lesson plan UI follows the app dark card theme everywhere. */
   function _isLight() {
-    const el = document.getElementById(_containerId);
-    if (!el) return false;
-    const panel = el.closest('#s-admin, .apanel[id^="ap-"]');
-    if (panel && (panel.closest('#s-admin') || panel.id === 'ap-lesson-plans')) return true;
     return false;
   }
 

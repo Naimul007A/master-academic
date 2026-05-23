@@ -15,7 +15,7 @@
   /* Backgrounds */
   --bg:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f2318 100%);
   --bg-flat:#0f172a;
-  --card:#ffffff;
+  --card:#1e293b;
   --card-glass:rgba(255,255,255,0.06);
 
   /* Text */
@@ -137,7 +137,7 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
   width:100%;padding:13px 16px;
   border:1px solid rgba(255,255,255,0.12);
   border-radius:13px;
-  background:rgba(0,0,0,0.25);
+  background:#1e293b !important;
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
   font-family:'Hind Siliguri',sans-serif;font-size:14px;
@@ -149,7 +149,7 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .inp::placeholder{color:rgba(255,255,255,0.3) !important;-webkit-text-fill-color:rgba(255,255,255,0.3) !important;}
 .inp:focus{
   border-color:rgba(0,229,160,0.5);
-  background:rgba(0,229,160,0.08);
+  background:#1e293b !important;
   box-shadow:0 0 0 3px rgba(0,229,160,0.15),0 2px 8px rgba(0,0,0,0.3);
   color:#fff !important;
   -webkit-text-fill-color:#fff !important;
@@ -161,7 +161,7 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
   -webkit-text-fill-color:#fff !important;
   caret-color:#00e5a0;
 }
-.inp option{background:#0f172a;color:#fff;}
+.inp option{background:#1e293b;color:#fff;}
 
 /* 3D Glossy Primary Button */
 .btnp{
@@ -220,12 +220,12 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 
 /* Lesson Plan Overview — always inside .admin-content, never a separate screen */
 .admin-content .apanel#panel-lesson,
-.admin-content [id*="lesson"],
+.admin-content .apanel#ap-lesson-plans,
 .admin-content .lesson-plan-wrap{
   display:none;
 }
 .admin-content .apanel#panel-lesson.active,
-.admin-content [id*="lesson"].active,
+.admin-content .apanel#ap-lesson-plans.active,
 .admin-content .lesson-plan-wrap.active{
   display:block;
 }
@@ -327,18 +327,24 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 
 /* Cards */
 .card{
-  background:#fff;
+  background:#1e293b;
+  color:#fff;
+  --text:#fff;
+  --dark:#fff;
+  --muted:rgba(255,255,255,0.72);
+  --border:rgba(255,255,255,0.16);
+  --card:#1e293b;
   border-radius:18px;padding:22px;
-  box-shadow:0 4px 24px rgba(0,0,0,0.07),0 1px 0 rgba(255,255,255,0.8) inset;
+  box-shadow:0 4px 24px rgba(0,0,0,0.18),0 1px 0 rgba(255,255,255,0.08) inset;
   margin-bottom:16px;
-  border:1px solid rgba(255,255,255,0.9);
+  border:1px solid rgba(255,255,255,0.1);
   position:relative;overflow:hidden;
 }
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
 }
-.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:var(--dark);}
+.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:#fff;}
 
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:600px){.fg{grid-template-columns:1fr;}}
@@ -346,20 +352,41 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;}
 
 /* Form Controls */
-input[type=text],input[type=time],input[type=file],input[type=tel],select,textarea{
+input[type=text],input[type=time],input[type=file],input[type=tel],input[type=email],
+input[type=password],input[type=number],input[type=date],select,textarea{
   width:100%;padding:11px 14px;
-  border:1.5px solid #e2e8f0;
+  border:1.5px solid rgba(255,255,255,0.16);
   border-radius:11px;
   font-family:'Hind Siliguri',sans-serif;font-size:13px;
-  color:var(--text);outline:none;transition:all .2s;
-  background:#fff;
-  box-shadow:0 2px 6px rgba(0,0,0,0.04),0 1px 0 rgba(255,255,255,0.8) inset;
+  color:#fff;outline:none;transition:all .2s;
+  -webkit-text-fill-color:#fff;
+  background:#1e293b;
+  box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 0 rgba(255,255,255,0.07) inset;
 }
 input:focus,select:focus,textarea:focus{
   border-color:#4f8ef7;
-  box-shadow:0 0 0 3px rgba(79,142,247,0.12),0 2px 6px rgba(0,0,0,0.04);
+  background:#1e293b;
+  color:#fff;
+  -webkit-text-fill-color:#fff;
+  box-shadow:0 0 0 3px rgba(79,142,247,0.16),0 2px 8px rgba(0,0,0,0.28);
 }
 textarea{resize:vertical;min-height:75px;}
+
+input::placeholder,
+textarea::placeholder{
+  color:rgba(255,255,255,0.48) !important;
+  -webkit-text-fill-color:rgba(255,255,255,0.48) !important;
+  opacity:1;
+}
+select option{
+  background:#1e293b !important;
+  color:#fff !important;
+}
+input[type=date]::-webkit-calendar-picker-indicator,
+input[type=time]::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  opacity:.85;
+}
 
 /* Dark-screen inputs (teacher / admin / manager panels) */
 #s-teacher input[type=text],#s-teacher input[type=time],#s-teacher input[type=tel],
@@ -370,7 +397,8 @@ textarea{resize:vertical;min-height:75px;}
 #s-manager select,#s-manager textarea{
   background:rgba(255,255,255,0.07);
   border-color:rgba(255,255,255,0.14);
-  color:#fff;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
   box-shadow:0 2px 8px rgba(0,0,0,0.25),0 1px 0 rgba(255,255,255,0.07) inset;
 }
 #s-teacher input::placeholder,#s-teacher textarea::placeholder,#s-teacher select option,
@@ -386,6 +414,91 @@ textarea{resize:vertical;min-height:75px;}
   background:rgba(0,229,160,0.07);
   box-shadow:0 0 0 3px rgba(0,229,160,0.15),0 2px 8px rgba(0,0,0,0.3);
   color:#fff;
+}
+
+/* Force dark fields even when inline styles try to make them light */
+input:not([type=checkbox]):not([type=radio]),
+select,
+textarea,
+.card input:not([type=checkbox]):not([type=radio]),
+.card select,
+.card textarea{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,0.16) !important;
+}
+input:not([type=checkbox]):not([type=radio]):focus,
+select:focus,
+textarea:focus,
+.card input:not([type=checkbox]):not([type=radio]):focus,
+.card select:focus,
+.card textarea:focus{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:#4f8ef7 !important;
+}
+
+/* Dark nested content inside cards: tables, lists, sheet cards, and generated rows */
+.card .li,
+.card .ncard,
+.card .rcard,
+.card .mbody,
+.card .witem,
+.card .shcard,
+.card .att-week-card,
+.card .hw-card,
+.card .exam-card,
+.card .quiz-q-card,
+.card .marks-table,
+.card table,
+.card thead,
+.card tbody,
+.card tr,
+.card th,
+.card td{
+  background:#1e293b !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,0.16) !important;
+}
+.card .li-title,
+.card .li-sub,
+.card .nt,
+.card .nb,
+.card .nd,
+.card .rcclass,
+.card .rcdate,
+.card .wtitle,
+.card .wsub,
+.card .sht,
+.card .shs,
+.card .hw-body,
+.card .exam-subj,
+.card .exam-info,
+.card .leader-name,
+.card .leader-pos,
+.card .marks-table td,
+.card .marks-table th{
+  color:#fff !important;
+}
+.card .li:hover,
+.card .witem:hover,
+.card .tbl tr:hover td,
+.card .shcard:hover,
+.card .ncard:hover,
+.card .rcard:hover{
+  background:#273449 !important;
+}
+.card .sfb{
+  background:#273449 !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,0.18) !important;
+}
+.card .sfb.active{
+  background:linear-gradient(135deg,#00e5a0,#4f8ef7) !important;
+  color:#fff !important;
+  border-color:transparent !important;
 }
 
 /* Quiz builder inputs (also on dark background) */

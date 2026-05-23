@@ -136,12 +136,12 @@
     font-size:13px;
   }
 
-  /* Dark-mode aware overrides for admin light panel */
-  .apanel .dash-kpi{border:1px solid rgba(0,0,0,.07);}
-  .apanel .dash-chart-wrap{background:#f9fafb;border:1px solid #e8eaed;}
-  .apanel .dash-hbar-track{background:rgba(0,0,0,.07);}
-  .apanel .dash-list-item{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
-  .apanel .dash-sec::after{opacity:.1;}
+  /* Dashboard cards follow the dark app card theme */
+  .apanel .dash-kpi{background:#1e293b!important;color:#fff!important;border:1px solid rgba(255,255,255,.1);}
+  .apanel .dash-chart-wrap{background:#1e293b;border:1px solid rgba(255,255,255,.16);color:#fff;}
+  .apanel .dash-hbar-track{background:rgba(255,255,255,.1);}
+  .apanel .dash-list-item{background:#1e293b;border-color:rgba(255,255,255,.16);color:#fff;}
+  .apanel .dash-sec::after{opacity:.12;}
   /* ── DESKTOP GRID FIX ───────────────────────────── */
 .dash-main-grid{
   display:grid;
@@ -473,9 +473,9 @@ window.renderDashboard = function(containerId, roleHint){
   if(!el) return;
   const d = _dashCompute();
 
-  /* colour scheme adapts to dark (manager/chairman) vs light (admin) */
-  const isDark = roleHint === 'manager';
-  const textPri  = isDark ? '#ffffff' : '#1a1a2e';
+  /* Dashboard uses the same dark card theme across admin/manager/chairman. */
+  const isDark = true;
+  const textPri  = isDark ? '#ffffff' : '#ffffff';
   const textMut  = isDark ? 'rgba(255,255,255,.5)' : '#5f6368';
   const cardBg   = isDark ? 'rgba(255,255,255,.06)' : '#f8f9fa';
   const borderC  = isDark ? 'rgba(255,255,255,.1)' : '#e8eaed';
@@ -499,7 +499,7 @@ window.renderDashboard = function(containerId, roleHint){
 
     <!-- ── Today Strip ── -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:900;color:${textPri};">
+      <div style="font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:900;">
         📊 Analytics Dashboard
       </div>
       <div style="font-size:11px;color:${textMut};font-weight:600;">

@@ -569,7 +569,7 @@ window.addEventListener('beforeunload',()=>{
 
 <style>
 :root{--g:#00c896;--gd:#009e76;--b:#1a73e8;--r:#e84040;--y:#ffb300;
-  --bg:#f0f4f8;--card:#fff;--text:#1a2340;--muted:#7a8499;--border:#dde3ed;--dark:#1a2340;}
+  --bg:#f0f4f8;--card:#1e293b;--text:#1a2340;--muted:#7a8499;--border:#dde3ed;--dark:#1a2340;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
@@ -680,17 +680,118 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 /* legacy atabs — hidden now */
 .atabs{display:none;}
 .atab{}
-.card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px;}
-.card h3{font-size:15px;font-weight:800;margin-bottom:14px;}
+.card{background:#1e293b;color:#fff;--text:#fff;--dark:#fff;--muted:rgba(255,255,255,.72);--border:rgba(255,255,255,.16);--card:#1e293b;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.18);margin-bottom:16px;border:1px solid rgba(255,255,255,.1);}
+.card h3{font-size:15px;font-weight:800;margin-bottom:14px;color:#fff;}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:600px){.fg{grid-template-columns:1fr;}}
 .fg .full{grid-column:1/-1;}
 .lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;}
-input[type=text],input[type=time],input[type=file],input[type=tel],select,textarea{
-  width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;
-  font-family:'Hind Siliguri',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border .2s;background:#fff;}
-input:focus,select:focus,textarea:focus{border-color:var(--g);}
+input[type=text],input[type=time],input[type=file],input[type=tel],input[type=email],
+input[type=password],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:10px 13px;border:1.5px solid rgba(255,255,255,.16);border-radius:10px;
+  font-family:'Hind Siliguri',sans-serif;font-size:13px;color:#fff;outline:none;transition:border .2s;background:#1e293b;-webkit-text-fill-color:#fff;}
+input:focus,select:focus,textarea:focus{border-color:var(--g);background:#1e293b;color:#fff;-webkit-text-fill-color:#fff;}
 textarea{resize:vertical;min-height:75px;}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.48)!important;-webkit-text-fill-color:rgba(255,255,255,.48)!important;opacity:1;}
+select option{background:#1e293b!important;color:#fff!important;}
+input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.85;}
+input:not([type=checkbox]):not([type=radio]),select,textarea{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+input:not([type=checkbox]):not([type=radio]):focus,select:focus,textarea:focus{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:var(--g) !important;
+}
+.card input:not([type=checkbox]):not([type=radio]),
+.card select,
+.card textarea{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+.card input:not([type=checkbox]):not([type=radio]):focus,
+.card select:focus,
+.card textarea:focus{
+  background:#1e293b !important;
+  color:#fff !important;
+  -webkit-text-fill-color:#fff !important;
+  border-color:var(--g) !important;
+}
+.card input::placeholder,
+.card textarea::placeholder{
+  color:rgba(255,255,255,.48) !important;
+  -webkit-text-fill-color:rgba(255,255,255,.48) !important;
+  opacity:1;
+}
+.card select option{
+  background:#1e293b !important;
+  color:#fff !important;
+}
+.card .li,
+.card .ncard,
+.card .rcard,
+.card .mbody,
+.card .witem,
+.card .shcard,
+.card .att-week-card,
+.card .hw-card,
+.card .exam-card,
+.card .quiz-q-card,
+.card .marks-table,
+.card table,
+.card thead,
+.card tbody,
+.card tr,
+.card th,
+.card td{
+  background:#1e293b !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.16) !important;
+}
+.card .li-title,
+.card .li-sub,
+.card .nt,
+.card .nb,
+.card .nd,
+.card .rcclass,
+.card .rcdate,
+.card .wtitle,
+.card .wsub,
+.card .sht,
+.card .shs,
+.card .hw-body,
+.card .exam-subj,
+.card .exam-info,
+.card .leader-name,
+.card .leader-pos,
+.card .marks-table td,
+.card .marks-table th{
+  color:#fff !important;
+}
+.card .li:hover,
+.card .witem:hover,
+.card .tbl tr:hover td,
+.card .shcard:hover,
+.card .ncard:hover,
+.card .rcard:hover{
+  background:#273449 !important;
+}
+.card .sfb{
+  background:#273449 !important;
+  color:#fff !important;
+  border-color:rgba(255,255,255,.18) !important;
+}
+.card .sfb.active{
+  background:linear-gradient(135deg,#00e5a0,#4f8ef7) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+}
 .badd{width:100%;padding:11px;border:none;border-radius:10px;
   background:linear-gradient(135deg,var(--g),var(--b));color:#fff;
   font-family:'Baloo 2',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:3px;}
@@ -1972,19 +2073,18 @@ input[type=radio]:checked+.quiz-opt-inp{border-color:var(--g);}
       </div>
       <div class="card"><h3>📋 Active Due Notifications</h3><div id="dues-admin-list"></div></div>
     </div>
-  </div>
-      </div><!-- /admin-content -->
-    </div><!-- /admin-layout -->
       <!-- Lesson Plans Panel -->
-    <div class="apanel" id="ap-lesson-plans">
-      <div class="card" style="padding:18px;">
-        <div id="admin-lesson-plan-section">
-          <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
-            Click "Lesson Plans" in the menu to load…
+      <div class="apanel" id="ap-lesson-plans">
+        <div class="card" style="padding:18px;">
+          <div id="admin-lesson-plan-section">
+            <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px;">
+              Click "Lesson Plans" in the menu to load...
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      </div><!-- /admin-content -->
+    </div><!-- /admin-layout -->
   </div><!-- /abody -->
 <!-- MANAGER / CHAIRMAN SCREEN -->
 <div class="screen" id="s-manager">
@@ -7922,7 +8022,7 @@ window._attQueuedWrite   = window._attQueuedWrite;
 
     // Render shell — export buttons only, no filter bar, no "Overview" heading
     container.innerHTML = `
-      <div style="font-family:'Baloo 2',sans-serif;color:#1a2340;">
+      <div style="font-family:'Baloo 2',sans-serif;color:#fff;">
         <div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
           <button id="alp-export-week" data-from="${wr.from}" data-to="${wr.to}"
             style="background:#1a73e822;border:1px solid #1a73e855;color:#1a73e8;border-radius:10px;padding:8px 14px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;cursor:pointer;">⬇ Weekly</button>
@@ -7931,7 +8031,7 @@ window._attQueuedWrite   = window._attQueuedWrite;
           <button id="alp-export-custom"
             style="background:#ff980022;border:1px solid #ff980055;color:#ff9800;border-radius:10px;padding:8px 14px;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:12px;cursor:pointer;">⬇ Custom Range</button>
         </div>
-        <div id="alp-list"><div style="text-align:center;padding:20px;color:#7a8499;">Loading…</div></div>
+        <div id="alp-list"><div style="text-align:center;padding:20px;color:rgba(255,255,255,.65);">Loading…</div></div>
       </div>`;
 
     function _renderList() {
@@ -7939,7 +8039,7 @@ window._attQueuedWrite   = window._attQueuedWrite;
       const listEl = document.getElementById('alp-list');
       if (!listEl) return;
       if (!plans.length) {
-        listEl.innerHTML = '<div style="text-align:center;padding:32px;color:#7a8499;">No lesson plans found.</div>';
+        listEl.innerHTML = '<div style="text-align:center;padding:32px;color:rgba(255,255,255,.65);">No lesson plans found.</div>';
         return;
       }
       // Group by subject → date
@@ -7957,10 +8057,10 @@ window._attQueuedWrite   = window._attQueuedWrite;
       const totalCls  = new Set(plans.map(p=>p.class)).size;
       html += `<div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
         ${[['📋',plans.length,'Total Plans'],['📚',subjects.length,'Subjects'],['🏫',totalCls,'Classes'],['📅',totalDays,'Days']].map(([ic,v,lb])=>`
-          <div style="flex:1;min-width:80px;background:#f0f4f8;border-radius:14px;padding:12px;text-align:center;border:1px solid #e0e4ea;">
+          <div style="flex:1;min-width:80px;background:#1e293b;border-radius:14px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,.16);">
             <div style="font-size:20px;">${ic}</div>
-            <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#1a2340;">${v}</div>
-            <div style="font-size:10px;color:#7a8499;font-weight:600;">${lb}</div>
+            <div style="font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:800;color:#fff;">${v}</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.65);font-weight:600;">${lb}</div>
           </div>`).join('')}
       </div>`;
       subjects.forEach(subj => {
@@ -7972,7 +8072,7 @@ window._attQueuedWrite   = window._attQueuedWrite;
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:12px 16px;border-radius:14px;background:${color}18;border-left:5px solid ${color};">
             <div>
               <div style="font-weight:800;font-size:16px;color:${color};">${_escHtml(subj)}</div>
-              <div style="font-size:11px;color:#7a8499;margin-top:2px;">${total} session${total!==1?'s':''} across ${dates.length} day${dates.length!==1?'s':''}</div>
+              <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;">${total} session${total!==1?'s':''} across ${dates.length} day${dates.length!==1?'s':''}</div>
             </div>
           </div>
           <div style="padding-left:6px;">`;
@@ -7980,14 +8080,14 @@ window._attQueuedWrite   = window._attQueuedWrite;
           const dayPlans = dateMap[date];
           const dayLbl = (dayPlans[0].day||'').toUpperCase();
           html += `<div style="margin-bottom:10px;">
-            <div style="font-size:10px;font-weight:700;color:#7a8499;letter-spacing:1px;margin-bottom:6px;">${dayLbl} ${date}</div>`;
+            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:1px;margin-bottom:6px;">${dayLbl} ${date}</div>`;
           dayPlans.forEach(plan => {
-            html += `<div style="background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid #e8eaed;border-left:3px solid ${color}55;">
-              <div style="font-size:13px;font-weight:700;color:#1a2340;">${_escHtml(plan.class||'')}${plan.time?` <span style="color:#7a8499;font-weight:500;">· ${_fmt12(plan.time)}</span>`:''}
+            html += `<div style="background:#1e293b;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(255,255,255,.16);border-left:3px solid ${color}55;">
+              <div style="font-size:13px;font-weight:700;color:#fff;">${_escHtml(plan.class||'')}${plan.time?` <span style="color:rgba(255,255,255,.65);font-weight:500;">· ${_fmt12(plan.time)}</span>`:''}
               </div>
               <div style="font-size:13px;color:${color};font-weight:700;margin-top:4px;">📖 ${_escHtml(plan.topic||'')}</div>
-              ${plan.teacher?`<div style="font-size:11px;color:#7a8499;margin-top:3px;">👤 ${_escHtml(plan.teacher)}</div>`:''}
-              ${plan.notes?`<div style="font-size:11px;color:#7a8499;margin-top:5px;line-height:1.5;">${_escHtml(plan.notes)}</div>`:''}
+              ${plan.teacher?`<div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:3px;">👤 ${_escHtml(plan.teacher)}</div>`:''}
+              ${plan.notes?`<div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:5px;line-height:1.5;">${_escHtml(plan.notes)}</div>`:''}
             </div>`;
           });
           html += '</div>';
