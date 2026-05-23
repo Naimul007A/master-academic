@@ -220,12 +220,12 @@ h1,h2,h3,.brand{font-family:'Baloo 2',sans-serif;}
 
 /* Lesson Plan Overview — always inside .admin-content, never a separate screen */
 .admin-content .apanel#panel-lesson,
-.admin-content [id*="lesson"],
+.admin-content .apanel#ap-lesson-plans,
 .admin-content .lesson-plan-wrap{
   display:none;
 }
 .admin-content .apanel#panel-lesson.active,
-.admin-content [id*="lesson"].active,
+.admin-content .apanel#ap-lesson-plans.active,
 .admin-content .lesson-plan-wrap.active{
   display:block;
 }
